@@ -1,3 +1,4 @@
+package javatf;
 public abstract class Caixa{
     private String id;
     private int peso;

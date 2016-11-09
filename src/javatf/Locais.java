@@ -1,3 +1,4 @@
+package javatf;
 import java.util.*;
 
 public class Locais{

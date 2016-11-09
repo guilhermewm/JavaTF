@@ -1,3 +1,4 @@
+package javatf;
 public class Local{
     private String cidade;
     private int distancia;

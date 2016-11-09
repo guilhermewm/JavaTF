@@ -1,3 +1,4 @@
+package javatf;
 public class CxNormal extends Caixa{    
     public CxNormal(String umId,int umPeso){
         super(umId,umPeso);

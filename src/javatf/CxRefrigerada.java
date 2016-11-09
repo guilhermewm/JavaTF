@@ -1,3 +1,4 @@
+package javatf;
 public class CxRefrigerada extends Caixa{
     private boolean energia;
         
