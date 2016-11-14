@@ -27,7 +27,7 @@ public class VeiculoPequeno extends Veiculo{
 
     @Override
     public double getConsumo() {
-        return 4.5;
+        return (4.5);
     }
     
 }
