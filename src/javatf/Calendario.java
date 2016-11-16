@@ -5,6 +5,7 @@
  */
 package javatf;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -13,28 +14,15 @@ import java.util.Locale;
  *
  * @author gwm13
  */
-public class Calendario {
-    Calendar c = Calendar.getInstance();
-  
-    //Método que pula um dia no calendário
+public class Calendario {    
+    LocalDate date = LocalDate.of(2016, 11, 16); 
+            
     public void nextDay(){
-        int day = c.get(Calendar.DAY_OF_MONTH);
-        c.set(Calendar.DAY_OF_MONTH, day+1);
+        date = date.plusDays(1);
     }
     
-    //Método que volta um dia no calendário
-    public void beforeDay(){
-        int day = c.get(Calendar.DAY_OF_MONTH);
-        c.set(Calendar.DAY_OF_MONTH, day-1);
+    public LocalDate getDate(){
+        return this.date;
     }
-    
-    //Método que retorna o dia/mes/ano em string
-    public String date(){
-        return c.get(Calendar.DAY_OF_MONTH)+ "/"+ c.get(Calendar.MONTH) + "/" + c.get(Calendar.YEAR);
-    }
-
-    
-    
-    
     
 }
