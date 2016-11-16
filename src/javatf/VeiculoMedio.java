@@ -29,4 +29,8 @@ public class VeiculoMedio extends Veiculo {
     public double getConsumo() {
         return (3);
     }
+    
+    public double getCapacidadeMax(){
+        return(2500);
+    }
 }

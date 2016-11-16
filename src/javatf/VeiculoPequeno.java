@@ -30,4 +30,7 @@ public class VeiculoPequeno extends Veiculo{
         return (4.5);
     }
     
+    public double getCapacidadeMax(){
+        return(1250);
+    }
 }

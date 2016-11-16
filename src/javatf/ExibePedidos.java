@@ -23,6 +23,12 @@ import javafx.scene.text.*;
 import javafx.stage.Stage;
 import javafx.stage.Modality;
 import java.util.Locale;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.media.AudioClip;
 
 
@@ -136,6 +142,56 @@ public class ExibePedidos extends Application{
         hbClose.getChildren().add(btClose);
         grid.add(hbClose,1,5);
 
+        Button pedAtendDia = new Button();
+        pedAtendDia.setText("Ped. Atend. p/ dia");         
+        grid.add(pedAtendDia,0,6);
+        pedAtendDia.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                criaDialogoPedAtend();
+            }
+        });
+        
+        Button pedAtrDia = new Button();
+        pedAtrDia.setText("Ped. Atrasados. p/ dia");         
+        grid.add(pedAtrDia,1,6);
+        pedAtrDia.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                criaDialogoPedAtr();
+            }
+        });
+        
+        Button TxSucces = new Button();
+        TxSucces.setText("Taxa de sucesso");         
+        grid.add(TxSucces,0,7);
+        TxSucces.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                criaDialogoTxSucces();
+            }
+        });
+        
+        Button TxOcup = new Button();
+        TxOcup.setText("Taxa de ocupação");         
+        grid.add(TxOcup,1,7);
+        TxOcup.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                criaDialogoTxOcup();
+            }
+        });
+        
+        Button lucro = new Button();
+        lucro.setText("Lucratividade");         
+        grid.add(lucro,0,8);
+        lucro.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                criaDialogoLucro();
+            }
+        });
+       
         // Adiciona o painel a cena e exibe        
         Scene scene = new Scene(grid);
         primaryStage.setTitle("So vai - Transportadora");
@@ -204,6 +260,240 @@ public class ExibePedidos extends Application{
         Scene scene = new Scene(grid);
         dlgStage = new Stage();
         dlgStage.setTitle("Detalhamento do pedido");
+        dlgStage.initModality(Modality.APPLICATION_MODAL);
+        dlgStage.setScene(scene);
+        dlgStage.showAndWait();
+    }
+    
+    private void criaDialogoPedAtend(){
+        // Define o grid basico
+        GridPane grid = new GridPane();
+        grid.setAlignment(Pos.CENTER);
+        grid.setHgap(20);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(25, 25, 25, 25));
+        
+        LineChart graficoLinha = new LineChart<>(
+            new CategoryAxis(), new NumberAxis());
+          final String T1 = "T1";
+          final String T2 = "T2";
+          final String T3 = "T3";
+          final String T4 = "T4";
+
+          XYChart.Series prod1 = new XYChart.Series();
+          prod1.setName("Produto 1");
+
+          prod1.getData().add(new XYChart.Data(T1, 5));
+          prod1.getData().add(new XYChart.Data(T2, -2));
+          prod1.getData().add(new XYChart.Data(T3, 3));
+          prod1.getData().add(new XYChart.Data(T4, 15));
+
+          XYChart.Series prod2 = new XYChart.Series();
+          prod2.setName("Produto 2");
+
+          prod2.getData().add(new XYChart.Data(T1, -5));
+          prod2.getData().add(new XYChart.Data(T2, -1));
+          prod2.getData().add(new XYChart.Data(T3, 12));
+          prod2.getData().add(new XYChart.Data(T4, 8));
+
+          XYChart.Series prod3 = new XYChart.Series();
+          prod3.setName("Produto 3");
+
+          prod3.getData().add(new XYChart.Data(T1, 12));
+          prod3.getData().add(new XYChart.Data(T2, 15));
+          prod3.getData().add(new XYChart.Data(T3, 12));
+          prod3.getData().add(new XYChart.Data(T4, 20));
+          graficoLinha.getData().addAll(prod1, prod2, prod3);
+          graficoLinha.setPrefSize(400, 400);
+       
+        grid.add(graficoLinha, 0, 0);
+
+        Button btClose = new Button();
+        btClose.setText("Fechar");
+        btClose.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                dlgStage.close();
+            }
+        });
+        HBox hbClose = new HBox(30);
+        hbClose.setAlignment(Pos.BOTTOM_RIGHT);
+        hbClose.getChildren().add(btClose);
+        grid.add(hbClose,1,0);
+    
+        // Adiciona o painel a cena e exibe        
+        Scene scene = new Scene(grid);
+        dlgStage = new Stage();
+        dlgStage.setTitle("Pedidos Atendidos Por Dia");
+        dlgStage.initModality(Modality.APPLICATION_MODAL);
+        dlgStage.setScene(scene);
+        dlgStage.showAndWait();
+    }
+    
+    private void criaDialogoPedAtr(){
+        // Define o grid basico
+        GridPane grid = new GridPane();
+        grid.setAlignment(Pos.CENTER);
+        grid.setHgap(20);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(25, 25, 25, 25));
+        
+        BarChart graficoBarra = new BarChart<>(
+            new CategoryAxis(), new NumberAxis());
+        
+        final String T1 = "T1";
+        final String T2 = "T2";
+        final String T3 = "T3";
+        final String T4 = "T4";
+          XYChart.Series prod1 = new XYChart.Series();
+            prod1.setName("Produto 1");
+
+            prod1.getData().add(new XYChart.Data(T1, 5));
+            prod1.getData().add(new XYChart.Data(T2, -2));
+            prod1.getData().add(new XYChart.Data(T3, 3));
+            prod1.getData().add(new XYChart.Data(T4, 15));
+
+            XYChart.Series prod2 = new XYChart.Series();
+            prod2.setName("Produto 2");
+
+            prod2.getData().add(new XYChart.Data(T1, -5));
+            prod2.getData().add(new XYChart.Data(T2, -1));
+            prod2.getData().add(new XYChart.Data(T3, 12));
+            prod2.getData().add(new XYChart.Data(T4, 8));
+
+            XYChart.Series prod3 = new XYChart.Series();
+            prod3.setName("Produto 3");
+
+            prod3.getData().add(new XYChart.Data(T1, 12));
+            prod3.getData().add(new XYChart.Data(T2, 15));
+            prod3.getData().add(new XYChart.Data(T3, 12));
+            prod3.getData().add(new XYChart.Data(T4, 20));
+          graficoBarra.getData().addAll(prod1, prod2, prod3);
+          graficoBarra.setPrefSize(400, 400);
+       
+        grid.add(graficoBarra, 0, 0);
+
+        Button btClose = new Button();
+        btClose.setText("Fechar");
+        btClose.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                dlgStage.close();
+            }
+        });
+        HBox hbClose = new HBox(30);
+        hbClose.setAlignment(Pos.BOTTOM_RIGHT);
+        hbClose.getChildren().add(btClose);
+        grid.add(hbClose,1,0);
+    
+        // Adiciona o painel a cena e exibe        
+        Scene scene = new Scene(grid);
+        dlgStage = new Stage();
+        dlgStage.setTitle("Pedidos Atrasados Por Dia");
+        dlgStage.initModality(Modality.APPLICATION_MODAL);
+        dlgStage.setScene(scene);
+        dlgStage.showAndWait();
+    }
+    
+    private void criaDialogoTxSucces(){
+        // Define o grid basico
+        GridPane grid = new GridPane();
+        grid.setAlignment(Pos.CENTER);
+        grid.setHgap(20);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(25, 25, 25, 25));
+       
+        grid.add(new Label("Teste caixa dialogo:"), 0, 0);
+
+        Button btClose = new Button();
+        btClose.setText("Fechar");
+        btClose.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                dlgStage.close();
+            }
+        });
+        HBox hbClose = new HBox(30);
+        hbClose.setAlignment(Pos.BOTTOM_RIGHT);
+        hbClose.getChildren().add(btClose);
+        grid.add(hbClose,1,0);
+    
+        // Adiciona o painel a cena e exibe        
+        Scene scene = new Scene(grid);
+        dlgStage = new Stage();
+        dlgStage.setTitle("Taxa de sucesso");
+        dlgStage.initModality(Modality.APPLICATION_MODAL);
+        dlgStage.setScene(scene);
+        dlgStage.showAndWait();
+    }
+    
+    private void criaDialogoTxOcup(){
+        // Define o grid basico
+        GridPane grid = new GridPane();
+        grid.setAlignment(Pos.CENTER);
+        grid.setHgap(20);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(25, 25, 25, 25));
+       
+        grid.add(new Label("Teste caixa dialogo:"), 0, 0);
+
+        Button btClose = new Button();
+        btClose.setText("Fechar");
+        btClose.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                dlgStage.close();
+            }
+        });
+        HBox hbClose = new HBox(30);
+        hbClose.setAlignment(Pos.BOTTOM_RIGHT);
+        hbClose.getChildren().add(btClose);
+        grid.add(hbClose,1,0);
+    
+        // Adiciona o painel a cena e exibe        
+        Scene scene = new Scene(grid);
+        dlgStage = new Stage();
+        dlgStage.setTitle("Taxa de Ocupação");
+        dlgStage.initModality(Modality.APPLICATION_MODAL);
+        dlgStage.setScene(scene);
+        dlgStage.showAndWait();
+    }
+    
+    private void criaDialogoLucro(){
+        // Define o grid basico
+        GridPane grid = new GridPane();
+        grid.setAlignment(Pos.CENTER);
+        grid.setHgap(20);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(25, 25, 25, 25));
+        
+        PieChart graficoPizza = new PieChart();
+        graficoPizza.getData().addAll(new PieChart.Data("Trimestre 1", 11),
+          new PieChart.Data("Trimestre 2", 1),
+          new PieChart.Data("Trimestre 3", 34),
+          new PieChart.Data("Trimestre 5", 12));
+        graficoPizza.setTitle("Lucros por Trimestre");
+        graficoPizza.setPrefSize(400,400);
+        
+        grid.add(graficoPizza, 0, 0);
+
+        Button btClose = new Button();
+        btClose.setText("Fechar");
+        btClose.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                dlgStage.close();
+            }
+        });
+        HBox hbClose = new HBox(30);
+        hbClose.setAlignment(Pos.BOTTOM_RIGHT);
+        hbClose.getChildren().add(btClose);
+        grid.add(hbClose,0,1);
+    
+        // Adiciona o painel a cena e exibe        
+        Scene scene = new Scene(grid);
+        dlgStage = new Stage();
+        dlgStage.setTitle("Lucratividade Média");
         dlgStage.initModality(Modality.APPLICATION_MODAL);
         dlgStage.setScene(scene);
         dlgStage.showAndWait();

@@ -41,5 +41,6 @@ public abstract class Veiculo {
 
     public abstract double getVelMedia(); 
     
+    public abstract double getCapacidadeMax();    
     
 }
