@@ -1,40 +1,28 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package javatf;
+import java.util.*;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.HashMap;
-
-/**
- *
- * @author 16111019
- */
-public class Destinos {
-    private Map<String,Integer> cidades; 
+public class Destinos{
+    private static Destinos lstLoc = new Destinos();
+    private List<Local> locais;
     
-    public Destinos(){
-        cidades = new HashMap<>();
-        cidades.put("Rio de Janeiro",1500);
-        cidades.put("Florianopolis",450);
-        cidades.put("Curitiba",700);
-        cidades.put("Canoas",20);        
-        cidades.put("Pelotas",250);              
-        cidades.put("Torres",190);
+    private Destinos(){
+        locais = new ArrayList<Local>(5);
+        locais.add(new Local("Florianopolis",480));
+        locais.add(new Local("Curitiba",750));
+        locais.add(new Local("Sao Paulo",1143));
+        locais.add(new Local("Rio de Janeiro",1569));
+        locais.add(new Local("Campo Grande",1418));  
     }
     
-    public Collection<String> getCidades(){
-        return(cidades.keySet());
+    public static Destinos getInstance(){
+        return(lstLoc);
     }
     
-    public Integer getDistancia(String cidade){
-        return(cidades.get(cidade));
+    public Local getLocal(int i){
+        return(locais.get(i));
+    }
+    
+    public int qtdadeLocais(){
+        return(locais.size());
     }
 }
-    
-    
-    
-

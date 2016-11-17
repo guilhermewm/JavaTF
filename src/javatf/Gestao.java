@@ -32,13 +32,13 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.media.AudioClip;
 
 
-public class ExibePedidos extends Application{
+public class Gestao extends Application{
     private TextField tfId,tfDataPrev,tfDestino,tfQtdCaixas;
     private TextField tfDlgId,tfDlgDataPrev,tfDlgDestino,tfDlgQtdCaixas;
     private TextField tfDlgQtNormal,tfDlgQtRefrigerada,tfDlgQtPerecivel;
     private Stage dlgStage;
   
-    public ExibePedidos(){
+    public Gestao(){
     }
     
     private void exibeDados(){

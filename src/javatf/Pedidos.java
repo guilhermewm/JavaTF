@@ -12,7 +12,7 @@ public class Pedidos{
     private Pedidos(){
         pedidos = new ArrayList<>();
         corrente = 0;
-        Locais locais = Locais.getInstance();
+        Destinos locais = Destinos.getInstance();
         CaixaFactory cf = CaixaFactory.getInstance();
         
         Pedido p = new Pedido(LocalDate.of(2016,12,10),locais.getLocal(0));
