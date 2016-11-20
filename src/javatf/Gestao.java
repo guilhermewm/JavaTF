@@ -23,12 +23,17 @@ import javafx.scene.text.*;
 import javafx.stage.Stage;
 import javafx.stage.Modality;
 import java.util.Locale;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.media.AudioClip;
 
 
@@ -47,7 +52,14 @@ public class Gestao extends Application{
         tfDestino.setText(ped.getCorrente().getLocal().getCidade());
         tfQtdCaixas.setText(""+ped.getCorrente().qtdadeCaixas());
     }
-        
+    
+    //Lista dos Veiculos
+    private final ObservableList<Veiculo> data1 =
+    FXCollections.observableArrayList(
+        new VeiculoGrande("IJK-9624", "Charqueadas"),
+        new VeiculoMedio("IJB-2556", "Porto Alegre")
+    );
+    
     @Override
     public void start(Stage primaryStage) {
         // Define o grid basico
@@ -58,20 +70,76 @@ public class Gestao extends Application{
         grid.setPadding(new Insets(25, 25, 25, 25));
 
         // Define o título do form
-        Text tfTitulo = new Text("Pedidos:");
+        Text tfTitulo = new Text("Só vai transportadora:");
         tfTitulo.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         grid.add(tfTitulo, 0, 0, 2, 1);    
-       
+        
+        Integer rowNum = 1;
+        // Agrupa os botoes em um HBox e posiciona
+        HBox gestData = new HBox(30);
+        gestData.getChildren().add(new Label("26/10/16"));
+        Button dataPrev = new Button();
+        dataPrev.setText("<<");
+        gestData.getChildren().add(dataPrev);
+        Button dataNext = new Button();
+        dataNext.setText(">>");
+        gestData.getChildren().add(dataNext);
+        grid.add(gestData, 0, rowNum++);
+        
+        // Define o título 
+        Text titleV = new Text("Veiculos Disponiveis:");
+        titleV.setFont(Font.font("Tahoma", FontWeight.NORMAL, 18));
+        grid.add(titleV, 0,rowNum++);    
+        
+        //Monta tabela de Veiculos
+        TableView table = new TableView();        
+        table.setEditable(false); 
+        
+        TableColumn nomeV = new TableColumn("Veiculo");
+        nomeV.setMinWidth(100);
+        nomeV.setCellValueFactory(
+            new PropertyValueFactory<Veiculo, String>("placa"));
+        
+        TableColumn destino = new TableColumn("Destino");
+        destino.setMinWidth(100);
+        destino.setCellValueFactory(
+            new PropertyValueFactory<Veiculo, String>("destino"));
+        
+        TableColumn volumeM = new TableColumn("Volume Max");
+        
+        table.setItems(data1);
+        table.getColumns().addAll(nomeV, destino, volumeM); 
+        table.setMaxHeight(250);   
+        table.setMaxWidth(800);   
+        grid.add(table,0,rowNum++);
+        
+        // Define o título 
+        Text titleP = new Text("Pedidos:");
+        titleV.setFont(Font.font("Tahoma", FontWeight.NORMAL, 18));
+        grid.add(titleP, 0,rowNum++);    
+        
+        //Monta tabela de Pedidos
+        TableView table2 = new TableView();        
+        table.setEditable(true); 
+        
+        TableColumn Ped = new TableColumn("Pedido");
+        TableColumn Dest = new TableColumn("Destino");
+        TableColumn QtdCx = new TableColumn("Qtd. Caixas");
+        
+        table2.getColumns().addAll(Ped, Dest, QtdCx); 
+        table2.setMaxHeight(300);     
+        grid.add(table2,0,rowNum++);
+        
         // Cria e posiciona 
-        grid.add(new Label("Pedido:"), 0, 1);
+        grid.add(new Label("Pedido"), 0, rowNum);
         tfId = new TextField();
-        grid.add(tfId, 1, 1);        
-        grid.add(new Label("Destino:"), 0, 2);
+        grid.add(tfId, 1, rowNum++);        
+        grid.add(new Label("Destino:"), 0, rowNum);
         tfDestino = new TextField();
-        grid.add(tfDestino, 1, 2);       
-        grid.add(new Label("Qtdade caixas:"), 0, 3);
+        grid.add(tfDestino, 1, rowNum++);       
+        grid.add(new Label("Qtdade caixas:"), 0, rowNum);
         tfQtdCaixas = new TextField();
-        grid.add(tfQtdCaixas, 1, 3);        
+        grid.add(tfQtdCaixas, 1, rowNum++);        
      
         exibeDados();
         
@@ -132,19 +200,19 @@ public class Gestao extends Application{
         HBox hbBtn = new HBox(30);
         hbBtn.getChildren().add(btPrev);
         hbBtn.getChildren().add(btNext);
-        grid.add(hbBtn, 0, 4);
+        grid.add(hbBtn, 0, rowNum++);
         HBox hbView = new HBox(30);
         hbView.setAlignment(Pos.CENTER);
         hbView.getChildren().add(btView);
-        grid.add(hbView, 0, 5);
+        grid.add(hbView, 0, rowNum);
         HBox hbClose = new HBox(30);
         hbClose.setAlignment(Pos.BOTTOM_RIGHT);
         hbClose.getChildren().add(btClose);
-        grid.add(hbClose,1,5);
+        grid.add(hbClose,1,rowNum++);
 
         Button pedAtendDia = new Button();
         pedAtendDia.setText("Ped. Atend. p/ dia");         
-        grid.add(pedAtendDia,0,6);
+        grid.add(pedAtendDia,0,rowNum);
         pedAtendDia.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -154,7 +222,7 @@ public class Gestao extends Application{
         
         Button pedAtrDia = new Button();
         pedAtrDia.setText("Ped. Atrasados. p/ dia");         
-        grid.add(pedAtrDia,1,6);
+        grid.add(pedAtrDia,1,rowNum++);
         pedAtrDia.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -164,7 +232,7 @@ public class Gestao extends Application{
         
         Button TxSucces = new Button();
         TxSucces.setText("Taxa de sucesso");         
-        grid.add(TxSucces,0,7);
+        grid.add(TxSucces,0,rowNum);
         TxSucces.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -174,7 +242,7 @@ public class Gestao extends Application{
         
         Button TxOcup = new Button();
         TxOcup.setText("Taxa de ocupação");         
-        grid.add(TxOcup,1,7);
+        grid.add(TxOcup,1,rowNum++);
         TxOcup.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -184,7 +252,7 @@ public class Gestao extends Application{
         
         Button lucro = new Button();
         lucro.setText("Lucratividade");         
-        grid.add(lucro,0,8);
+        grid.add(lucro,0,rowNum++);
         lucro.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
