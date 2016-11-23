@@ -17,6 +17,11 @@ public abstract class Veiculo {
         int dias = (int)((distancia / getVelMedia())/8);            
         return dias;
     }
+
+    @Override
+    public String toString() {
+        return "Placa: " + placa + "| Destino: " + destino;
+    }
     
     public double custoViagem(int distancia, double gasolina){
         return ((distancia/getConsumo())*gasolina)*1.2;

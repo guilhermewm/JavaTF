@@ -23,6 +23,10 @@ import javafx.scene.text.*;
 import javafx.stage.Stage;
 import javafx.stage.Modality;
 import java.util.Locale;
+import java.util.Observable;
+import java.util.Observer;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.BarChart;
@@ -35,13 +39,17 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.media.AudioClip;
+import javafx.scene.control.ListView;
+import javafx.scene.layout.VBox;
 
 
-public class Gestao extends Application{
+public class Gestao extends Application implements Observer{
     private TextField tfId,tfDataPrev,tfDestino,tfQtdCaixas;
     private TextField tfDlgId,tfDlgDataPrev,tfDlgDestino,tfDlgQtdCaixas;
     private TextField tfDlgQtNormal,tfDlgQtRefrigerada,tfDlgQtPerecivel;
     private Stage dlgStage;
+    private ListView<String> listView = null;
+    private Label label;
   
     public Gestao(){
     }
@@ -59,6 +67,8 @@ public class Gestao extends Application{
         new VeiculoGrande("IJK-9624", "Charqueadas"),
         new VeiculoMedio("IJB-2556", "Porto Alegre")
     );
+    
+    
     
     @Override
     public void start(Stage primaryStage) {
@@ -86,6 +96,9 @@ public class Gestao extends Application{
         gestData.getChildren().add(dataNext);
         grid.add(gestData, 0, rowNum++);
         
+        
+        
+        
         // Define o título 
         Text titleV = new Text("Veiculos Disponiveis:");
         titleV.setFont(Font.font("Tahoma", FontWeight.NORMAL, 18));
@@ -112,6 +125,33 @@ public class Gestao extends Application{
         table.setMaxHeight(250);   
         table.setMaxWidth(800);   
         grid.add(table,0,rowNum++);
+        
+        Garagem.getInstance().addObserver(this);
+        label = new Label("---");
+        ObservableList<String> items = FXCollections.observableArrayList(Garagem.getInstance().getVeiculos());
+        listView = new ListView<>(items);
+        listView.getSelectionModel().selectedItemProperty().addListener(
+            new ChangeListener<String>() {
+                public void changed(ObservableValue<? extends String> ov, String old_val, String new_val) {
+                        label.setText(new_val);
+            }            
+        });
+        Veiculo v2 = new VeiculoGrande("aaaaaa", "Porto ");
+        
+        
+        Button btn = new Button();
+        btn.setText("Add String");
+        btn.setOnAction((ActionEvent event) -> {
+            Garagem.getInstance().estaciona(v2);
+        });
+
+        
+        grid.add(listView, 1, rowNum);
+        grid.add(btn, 1, rowNum);
+        
+        grid.add(label, 1, rowNum);
+       
+        
         
         // Define o título 
         Text titleP = new Text("Pedidos:");
@@ -569,6 +609,12 @@ public class Gestao extends Application{
         
     public static void main(String[] args) {
         launch(args);           
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        String novoElemento = o.toString();
+        listView.getItems().add(listView.getItems().size(), novoElemento);
     }
 }
 

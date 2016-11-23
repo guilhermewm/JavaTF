@@ -7,36 +7,41 @@ package javatf;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
 /**
  *
  * @author 16111019
  */
-public class Garagem {
-    private static Garagem instance = null;    
-    private List<Veiculo> veiculos;
+public class Garagem extends Observable{
+    private static Garagem instance = new Garagem();    
+    private List<String> veiculos;
 
     private Garagem() {
         veiculos = new ArrayList<>();
     }
     
-    public List<Veiculo> getVeiculos(){
+    public List<String> getVeiculos(){
         return veiculos;
     } 
         
     public Boolean estaciona(Veiculo veiculo){
         if(veiculo != null){
-            veiculos.add(veiculo);
+            veiculos.add(veiculo.toString());
+            setChanged();
+            notifyObservers(veiculos);
             return true;
         }else{
             return false;
         }
     }
+
+    @Override
+    public String toString() {
+        return "" + veiculos;
+    }
     
-    public static Garagem getInstance(){
-        if (instance == null ){
-            instance = new Garagem();    
-        }
+    public static Garagem getInstance(){        
         return (instance);
     }
     
