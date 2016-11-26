@@ -50,7 +50,6 @@ public class Gestao extends Application implements Observer{
     private Stage dlgStage;
     private ListView<String> listView = null;
     private Label label;
-  
     public Gestao(){
     }
     
@@ -136,12 +135,20 @@ public class Gestao extends Application implements Observer{
                         label.setText(new_val);
             }            
         });
-        Veiculo v2 = new VeiculoGrande("aaaaaa", "Porto ");
+        Veiculo v2 = new VeiculoGrande("aaaaaa", "Porto Alegre");
         
+        listView.getSelectionModel().selectedItemProperty().addListener(
+            new ChangeListener<String>() {
+                public void changed(ObservableValue<? extends String> ov, 
+                    String old_val, String new_val) {
+                        label.setText("asfas");
+                        
+            }
+        });
         
         Button btn = new Button();
         btn.setText("Add String");
-        btn.setOnAction((ActionEvent event) -> {
+        btn.setOnAction((ActionEvent event) -> {            
             Garagem.getInstance().estaciona(v2);
         });
 

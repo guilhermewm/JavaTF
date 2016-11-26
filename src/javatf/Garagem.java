@@ -16,6 +16,7 @@ import java.util.Observable;
 public class Garagem extends Observable{
     private static Garagem instance = new Garagem();    
     private List<String> veiculos;
+    private int cont = 0;
 
     private Garagem() {
         veiculos = new ArrayList<>();
@@ -27,9 +28,10 @@ public class Garagem extends Observable{
         
     public Boolean estaciona(Veiculo veiculo){
         if(veiculo != null){
+            cont++;
             veiculos.add(veiculo.toString());
             setChanged();
-            notifyObservers(veiculos);
+            notifyObservers(veiculo);
             return true;
         }else{
             return false;
@@ -38,7 +40,7 @@ public class Garagem extends Observable{
 
     @Override
     public String toString() {
-        return "" + veiculos;
+        return "" + veiculos.get(cont-1);
     }
     
     public static Garagem getInstance(){        
