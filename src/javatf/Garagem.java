@@ -17,14 +17,36 @@ public class Garagem extends Observable{
     private static Garagem instance = new Garagem();    
     private List<String> veiculos;
     private int cont = 0;
-
+    private Veiculo v = new VeiculoGrande("IKG-9975", "Porto Alegre");
+    private Veiculo v2 = new VeiculoGrande("ABC-9975", "Canoas");
+    private Veiculo v3 = new VeiculoGrande("TGH-9975", "Sei lá");
+    private Veiculo v4 = new VeiculoGrande("JKL-9975", "Teste");
+    
     private Garagem() {
         veiculos = new ArrayList<>();
+        veiculos.add(v2.toString());
+        veiculos.add(v3.toString());
+        veiculos.add(v4.toString());
+        veiculos.add(v.toString());
     }
     
     public List<String> getVeiculos(){
+        System.out.println("Veiculos na Garagem: " + veiculos);
         return veiculos;
     } 
+    
+    public Boolean removeVeiculo(Veiculo v){        
+        if(v != null){
+            for(int x = 0; x < veiculos.size(); x++){
+                if(veiculos.get(x).equals(v.toString())){
+                    veiculos.remove(x);
+                }
+            }            
+            return true;
+        }else{
+            return false;
+        }
+    }
         
     public Boolean estaciona(Veiculo veiculo){
         if(veiculo != null){
@@ -40,7 +62,7 @@ public class Garagem extends Observable{
 
     @Override
     public String toString() {
-        return "" + veiculos.get(cont-1);
+        return "" + veiculos.get(cont);
     }
     
     public static Garagem getInstance(){        

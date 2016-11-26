@@ -25,6 +25,7 @@ import javafx.stage.Modality;
 import java.util.Locale;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.StringTokenizer;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -41,6 +42,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.media.AudioClip;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
+import static jdk.nashorn.internal.objects.NativeString.substring;
 
 
 public class Gestao extends Application implements Observer{
@@ -48,8 +50,14 @@ public class Gestao extends Application implements Observer{
     private TextField tfDlgId,tfDlgDataPrev,tfDlgDestino,tfDlgQtdCaixas;
     private TextField tfDlgQtNormal,tfDlgQtRefrigerada,tfDlgQtPerecivel;
     private Stage dlgStage;
-    private ListView<String> listView = null;
+    private ListView<String> listViewGaragem = null;
+    private ListView<String> listViewTransito = null;
     private Label label;
+    private String itemSelecionado = "";
+    private ObservableList<String> itemsGaragem;
+    private ObservableList<String> itemsTransito;
+    
+    
     public Gestao(){
     }
     
@@ -86,144 +94,105 @@ public class Gestao extends Application implements Observer{
         Integer rowNum = 1;
         // Agrupa os botoes em um HBox e posiciona
         HBox gestData = new HBox(30);
-        gestData.getChildren().add(new Label("26/10/16"));
-        Button dataPrev = new Button();
-        dataPrev.setText("<<");
-        gestData.getChildren().add(dataPrev);
+        Label labelDia = new Label();
+        labelDia.setText(Calendario.getInstance().getDate().toString());
+        grid.add(labelDia, 0, rowNum++);
+       
         Button dataNext = new Button();
         dataNext.setText(">>");
         gestData.getChildren().add(dataNext);
         grid.add(gestData, 0, rowNum++);
         
+        dataNext.setOnAction((ActionEvent event) -> {            
+            Calendario.getInstance().nextDay();
+            labelDia.setText(Calendario.getInstance().getDate().toString());
+        });
+        
+        
+        HBox titulos = new HBox(30);
+        // Define o título tabela Garagem
+        Text titleGaragem = new Text("Veiculos Disponiveis:");        
+        titulos.getChildren().add(titleGaragem);
+        
+        
+        Text titleEmTransito = new Text("Veiculos em transito:");
+        titulos.getChildren().add(titleEmTransito);
+        
+        
+        grid.add(titulos, 0, rowNum++);
+        
+        HBox listas = new HBox(30);
         
         
         
-        // Define o título 
-        Text titleV = new Text("Veiculos Disponiveis:");
-        titleV.setFont(Font.font("Tahoma", FontWeight.NORMAL, 18));
-        grid.add(titleV, 0,rowNum++);    
-        
-        //Monta tabela de Veiculos
-        TableView table = new TableView();        
-        table.setEditable(false); 
-        
-        TableColumn nomeV = new TableColumn("Veiculo");
-        nomeV.setMinWidth(100);
-        nomeV.setCellValueFactory(
-            new PropertyValueFactory<Veiculo, String>("placa"));
-        
-        TableColumn destino = new TableColumn("Destino");
-        destino.setMinWidth(100);
-        destino.setCellValueFactory(
-            new PropertyValueFactory<Veiculo, String>("destino"));
-        
-        TableColumn volumeM = new TableColumn("Volume Max");
-        
-        table.setItems(data1);
-        table.getColumns().addAll(nomeV, destino, volumeM); 
-        table.setMaxHeight(250);   
-        table.setMaxWidth(800);   
-        grid.add(table,0,rowNum++);
-        
+        //Define os itens da tabela Garagem
         Garagem.getInstance().addObserver(this);
-        label = new Label("---");
-        ObservableList<String> items = FXCollections.observableArrayList(Garagem.getInstance().getVeiculos());
-        listView = new ListView<>(items);
-        listView.getSelectionModel().selectedItemProperty().addListener(
+        itemsGaragem = FXCollections.observableArrayList(Garagem.getInstance().getVeiculos());
+        listViewGaragem = new ListView<>(itemsGaragem);
+        listViewGaragem.getSelectionModel().selectedItemProperty().addListener(
             new ChangeListener<String>() {
                 public void changed(ObservableValue<? extends String> ov, String old_val, String new_val) {
-                        label.setText(new_val);
+                        //label.setText(new_val);                        
+                        itemSelecionado = new_val;
+            }            
+        });       
+        
+        
+        
+         listas.getChildren().add(listViewGaragem);
+        
+        
+        
+        
+        
+        // Define o título tabela Veiculos em Transito
+        
+        
+        //Define os itens da tabela Garagem
+        EmTransito.getInstance().addObserver(this);
+        itemsTransito = FXCollections.observableArrayList(EmTransito.getInstance().getVeiculos());
+        listViewTransito = new ListView<>(itemsTransito);
+        listViewTransito.getSelectionModel().selectedItemProperty().addListener(
+            new ChangeListener<String>() {
+                public void changed(ObservableValue<? extends String> ov, String old_val, String new_val) {
+                        //label.setText(new_val);
+                        //System.out.println(new_val);
             }            
         });
-        Veiculo v2 = new VeiculoGrande("aaaaaa", "Porto Alegre");
-        
-        listView.getSelectionModel().selectedItemProperty().addListener(
-            new ChangeListener<String>() {
-                public void changed(ObservableValue<? extends String> ov, 
-                    String old_val, String new_val) {
-                        label.setText("asfas");
-                        
-            }
-        });
-        
-        Button btn = new Button();
-        btn.setText("Add String");
-        btn.setOnAction((ActionEvent event) -> {            
-            Garagem.getInstance().estaciona(v2);
-        });
-
-        
-        grid.add(listView, 1, rowNum);
-        grid.add(btn, 1, rowNum);
-        
-        grid.add(label, 1, rowNum);
        
         
-        
-        // Define o título 
-        Text titleP = new Text("Pedidos:");
-        titleV.setFont(Font.font("Tahoma", FontWeight.NORMAL, 18));
-        grid.add(titleP, 0,rowNum++);    
-        
-        //Monta tabela de Pedidos
-        TableView table2 = new TableView();        
-        table.setEditable(true); 
-        
-        TableColumn Ped = new TableColumn("Pedido");
-        TableColumn Dest = new TableColumn("Destino");
-        TableColumn QtdCx = new TableColumn("Qtd. Caixas");
-        
-        table2.getColumns().addAll(Ped, Dest, QtdCx); 
-        table2.setMaxHeight(300);     
-        grid.add(table2,0,rowNum++);
-        
-        // Cria e posiciona 
-        grid.add(new Label("Pedido"), 0, rowNum);
-        tfId = new TextField();
-        grid.add(tfId, 1, rowNum++);        
-        grid.add(new Label("Destino:"), 0, rowNum);
-        tfDestino = new TextField();
-        grid.add(tfDestino, 1, rowNum++);       
-        grid.add(new Label("Qtdade caixas:"), 0, rowNum);
-        tfQtdCaixas = new TextField();
-        grid.add(tfQtdCaixas, 1, rowNum++);        
+        listas.getChildren().add(listViewTransito);
+        grid.add(listas, 0, rowNum++);
+       
+       Button btnGaragem = new Button();
+        btnGaragem.setText("Colocar em Transito");
      
-        exibeDados();
+        btnGaragem.setOnAction((ActionEvent event) -> {  
+            if(itemSelecionado == ""){
+                System.out.println("Não selecionado");
+            }else{
+                StringTokenizer st = new StringTokenizer(itemSelecionado);
+                String placa = st.nextToken("Placa: ");            
+                int um = itemSelecionado.indexOf("Destino: ");          
+                String destino = itemSelecionado.substring(um + 9, itemSelecionado.length());
+                EmTransito.getInstance().viajem(new VeiculoMedio(placa, destino));
+                Garagem.getInstance().removeVeiculo(new VeiculoMedio(placa, destino));
+                
+                itemsGaragem = FXCollections.observableArrayList(Garagem.getInstance().getVeiculos());
+                listViewGaragem.setItems(itemsGaragem);
+                
+                itemsTransito = FXCollections.observableArrayList(EmTransito.getInstance().getVeiculos());
+                listViewTransito.setItems(itemsTransito);
+                
+//                Garagem.getInstance().getVeiculos();
+//                EmTransito.getInstance().getVeiculos();
+            }
+        });
         
-        // Define os botoes
-        Button btPrev = new Button();
-        btPrev.setText("<<");
-        btPrev.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                if (Pedidos.getInstance().getAnterior() == null){
-                    Alert alert = new Alert(AlertType.WARNING);
-                    alert.setTitle("Atenção !!");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Este é o primeiro pedido!");
-                    alert.showAndWait();
-                }else{
-                    exibeDados();
-                }
-            }
-        });
+        grid.add(btnGaragem, 0, rowNum++);
+        
 
-        Button btNext = new Button();
-        btNext.setText(">>");
-        btNext.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                if (Pedidos.getInstance().getProximo() == null){
-                    Alert alert = new Alert(AlertType.WARNING);
-                    alert.setTitle("Atenção !!");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Este é o ultimo pedido!");
-                    alert.showAndWait();
-                }else{
-                    exibeDados();
-                }
-            }
-        });
+        
 
         Button btView = new Button();
         btView.setText("Visualizar");
@@ -245,8 +214,6 @@ public class Gestao extends Application implements Observer{
         
         // Agrupa os botoes em um HBox e posiciona
         HBox hbBtn = new HBox(30);
-        hbBtn.getChildren().add(btPrev);
-        hbBtn.getChildren().add(btNext);
         grid.add(hbBtn, 0, rowNum++);
         HBox hbView = new HBox(30);
         hbView.setAlignment(Pos.CENTER);
@@ -621,7 +588,7 @@ public class Gestao extends Application implements Observer{
     @Override
     public void update(Observable o, Object arg) {
         String novoElemento = o.toString();
-        listView.getItems().add(listView.getItems().size(), novoElemento);
+        listViewGaragem.getItems().add(listViewGaragem.getItems().size(), novoElemento);
     }
 }
 
