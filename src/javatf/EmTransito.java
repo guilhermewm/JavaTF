@@ -27,7 +27,6 @@ public class EmTransito extends Observable {
     }
 
     public List getVeiculos() {
-        System.out.println("Veiculos em Transito: " + veiculos);
         return veiculos;
     }
 

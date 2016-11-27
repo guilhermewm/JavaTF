@@ -156,6 +156,10 @@ public class Gestao extends Application implements Observer {
             public void changed(ObservableValue<? extends Pedido> ov, Pedido old_val, Pedido new_val) {
                 //label.setText(new_val);     
                 itemSelecionadoPedido = new_val;
+               
+                itemsGaragem = FXCollections.observableArrayList(Garagem.getInstance().getVeiculosByDestino(itemSelecionadoPedido.getLocal().toString()));
+                listViewGaragem.setItems(itemsGaragem);
+            
             }
         });
         
@@ -183,16 +187,30 @@ public class Gestao extends Application implements Observer {
         itemsTransito = FXCollections.observableArrayList(EmTransito.getInstance().getVeiculos());
         listViewTransito = new ListView<>(itemsTransito);
         listViewTransito.getSelectionModel().selectedItemProperty().addListener(
-                new ChangeListener<Veiculo>() {
-            public void changed(ObservableValue<? extends Veiculo> ov, Veiculo old_val, Veiculo new_val) {
+            new ChangeListener<Veiculo>() {
+                public void changed(ObservableValue<? extends Veiculo> ov, Veiculo old_val, Veiculo new_val) {
 
-                //label.setText(new_val);
-                //System.out.println(new_val);
-            }
+                    //label.setText(new_val);
+                    //System.out.println(new_val);
+                }
         });
 
         listas.getChildren().add(listViewTransito);
         grid.add(listas, 0, rowNum++);
+        
+        Button btnSalvarPedido = new Button();
+        btnSalvarPedido.setText("Salvar Pedido");
+
+        btnSalvarPedido.setOnAction((ActionEvent event) -> {
+            if(itemSelecionadoPedido == null){
+                System.out.println("Não selecionado");
+            }else{
+                itemsGaragem = FXCollections.observableArrayList(Garagem.getInstance().getVeiculosByDestino(itemSelecionadoPedido.getLocal().toString()));
+                listViewGaragem.setItems(itemsGaragem);
+            }
+        });
+
+        grid.add(btnSalvarPedido, 0, rowNum++);
 
         Button btnGaragem = new Button();
         btnGaragem.setText("Colocar em Transito");
@@ -215,7 +233,7 @@ public class Gestao extends Application implements Observer {
             }
         });
 
-        grid.add(btnGaragem, 0, rowNum++);
+        grid.add(btnGaragem, 0 , rowNum++);
 
         Button btView = new Button();
         btView.setText("Visualizar");
