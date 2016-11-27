@@ -4,7 +4,7 @@ import java.util.*;
 import java.time.*;
 import java.time.temporal.ChronoUnit;
 
-public class Pedidos{
+public class Pedidos extends Observable{
     private static Pedidos lstPed = new Pedidos();
     private List<Pedido> pedidos;
     private int corrente;
@@ -42,6 +42,10 @@ public class Pedidos{
     public static Pedidos getInstance(){
         return(lstPed);
     }
+    
+    public List<Pedido> getPedidos(){
+        return pedidos;
+    }
 
     public Pedido getCorrente(){
         return(pedidos.get(corrente));
@@ -54,6 +58,11 @@ public class Pedidos{
         }else{
             return(null);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Pedidos: " + pedidos;
     }
     
     public Pedido getProximo(){

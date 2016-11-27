@@ -55,11 +55,14 @@ public class Gestao extends Application implements Observer {
     private TextField tfDlgQtNormal, tfDlgQtRefrigerada, tfDlgQtPerecivel;
     private Stage dlgStage;
     private ListView<Veiculo> listViewGaragem = null;
-    private ListView<Veiculo> listViewTransito = null;
+    private ListView<Veiculo> listViewTransito = null;    
+    private ListView<Pedido> listViewPedidos = null;
     private Label label;
-    private Veiculo itemSelecionado;
+    private Veiculo itemSelecionado;    
+    private Pedido itemSelecionadoPedido;
     private ObservableList<Veiculo> itemsGaragem;
-    private ObservableList<Veiculo> itemsTransito;
+    private ObservableList<Veiculo> itemsTransito;    
+    private ObservableList<Pedido> itemsPedidos;
     private int destinoSelecionado;
 
     public Gestao() {
@@ -72,12 +75,7 @@ public class Gestao extends Application implements Observer {
         tfQtdCaixas.setText("" + ped.getCorrente().qtdadeCaixas());
     }
 
-    //Lista dos Veiculos
-    private final ObservableList<Veiculo> data1
-            = FXCollections.observableArrayList(
-                    new VeiculoGrande("IJK-9624", "Charqueadas"),
-                    new VeiculoMedio("IJB-2556", "Porto Alegre")
-            );
+   
 
     @Override
     public void start(Stage primaryStage) {
@@ -110,7 +108,10 @@ public class Gestao extends Application implements Observer {
             labelDia.setText(Calendario.getInstance().getDate().toString());
             atualizaDiasRestantesVeiculos();
         });
-
+        
+        
+        
+        
         // Destinos
         Text titleDestinos = new Text("Destino:");
         grid.add(titleDestinos, 0, rowNum++);
@@ -134,6 +135,9 @@ public class Gestao extends Application implements Observer {
 
         HBox titulos = new HBox(30);
         // Define o título tabela Garagem
+        Text titlePedidos = new Text("Pedidos disponíveis:");
+        titulos.getChildren().add(titlePedidos);
+        
         Text titleGaragem = new Text("Veiculos Disponiveis:");
         titulos.getChildren().add(titleGaragem);
 
@@ -143,7 +147,23 @@ public class Gestao extends Application implements Observer {
         grid.add(titulos, 0, rowNum++);
 
         HBox listas = new HBox(30);
-
+        //Define os itens da tabela Pedidos
+        Pedidos.getInstance().addObserver(this);
+        itemsPedidos = FXCollections.observableArrayList(Pedidos.getInstance().getPedidos());
+        listViewPedidos = new ListView<>(itemsPedidos);
+        listViewPedidos.getSelectionModel().selectedItemProperty().addListener( new ChangeListener<Pedido>(){
+            @Override
+            public void changed(ObservableValue<? extends Pedido> ov, Pedido old_val, Pedido new_val) {
+                //label.setText(new_val);     
+                itemSelecionadoPedido = new_val;
+            }
+        });
+        
+        
+        
+        listas.getChildren().add(listViewPedidos);
+        
+        
         //Define os itens da tabela Garagem
         Garagem.getInstance().addObserver(this);
         listViewGaragem = new ListView<>(itemsGaragem);
@@ -552,11 +572,13 @@ public class Gestao extends Application implements Observer {
         grid.setPadding(new Insets(25, 25, 25, 25));
 
         PieChart graficoPizza = new PieChart();
-        graficoPizza.getData().addAll(new PieChart.Data("Trimestre 1", 11),
-                new PieChart.Data("Trimestre 2", 1),
-                new PieChart.Data("Trimestre 3", 34),
-                new PieChart.Data("Trimestre 5", 12));
-        graficoPizza.setTitle("Lucros por Trimestre");
+        Veiculo vg = new VeiculoGrande("aaa", "BBB");
+        Veiculo vm = new VeiculoMedio("aaa", "BBB");
+        Veiculo vp = new VeiculoPequeno("aaa", "BBB");
+        graficoPizza.getData().addAll(new PieChart.Data("Veiculos Grandes", vg.getConsumo()),
+                new PieChart.Data("Veiculos Médios", vm.getConsumo()),
+                new PieChart.Data("Veiculos Pequenos", vp.getConsumo()));
+        graficoPizza.setTitle("Lucros das entregas");
         graficoPizza.setPrefSize(400, 400);
 
         grid.add(graficoPizza, 0, 0);
