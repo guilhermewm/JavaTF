@@ -23,7 +23,7 @@ public abstract class Caixa {
 
     @Override
     public String toString() {
-        
+
         return "Caixas{" + "ID: " + id + ", Peso: " + peso + '}';
     }
 

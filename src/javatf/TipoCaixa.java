@@ -1,5 +1,5 @@
 package javatf;
-public enum TipoCaixa{
-    NORMAL,PERECIVEL,REFRIGERADA;
-}
 
+public enum TipoCaixa {
+    NORMAL, PERECIVEL, REFRIGERADA;
+}

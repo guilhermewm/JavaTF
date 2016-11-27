@@ -1,7 +1,8 @@
 package javatf;
-public class ExcessoDePesoException extends RuntimeException{
-    public ExcessoDePesoException(String msg){
+
+public class ExcessoDePesoException extends RuntimeException {
+
+    public ExcessoDePesoException(String msg) {
         super(msg);
     }
 }
-
