@@ -52,12 +52,12 @@ public class Gestao extends Application implements Observer{
     private TextField tfDlgId,tfDlgDataPrev,tfDlgDestino,tfDlgQtdCaixas;
     private TextField tfDlgQtNormal,tfDlgQtRefrigerada,tfDlgQtPerecivel;
     private Stage dlgStage;
-    private ListView<String> listViewGaragem = null;
-    private ListView<String> listViewTransito = null;
+    private ListView<Veiculo> listViewGaragem = null;
+    private ListView<Veiculo> listViewTransito = null;
     private Label label;
-    private String itemSelecionado = "";
-    private ObservableList<String> itemsGaragem;
-    private ObservableList<String> itemsTransito;
+    private Veiculo itemSelecionado;
+    private ObservableList<Veiculo> itemsGaragem;
+    private ObservableList<Veiculo> itemsTransito;
     private int destinoSelecionado;
     
     
@@ -123,8 +123,10 @@ public class Gestao extends Application implements Observer{
         cb.getSelectionModel().selectedIndexProperty().addListener(new
             ChangeListener<Number>(){
                 @Override
-                public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {                      
-                    itemsGaragem = FXCollections.observableArrayList(Garagem.getInstance().getVeiculosByDestino(Destinos.getInstance().getLocal(newValue.intValue()).toString()));
+                public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                    
+                    String a = Destinos.getInstance().getLocal(newValue.intValue()).toString();
+                    itemsGaragem = FXCollections.observableArrayList(Garagem.getInstance().getVeiculosByDestino(a));
                     listViewGaragem.setItems(itemsGaragem);
                     destinoSelecionado = newValue.intValue();
                 }
@@ -154,10 +156,9 @@ public class Gestao extends Application implements Observer{
         Garagem.getInstance().addObserver(this);
         listViewGaragem = new ListView<>(itemsGaragem);
         listViewGaragem.getSelectionModel().selectedItemProperty().addListener(
-            new ChangeListener<String>() {
-                public void changed(ObservableValue<? extends String> ov, String old_val, String new_val) {
-                        //label.setText(new_val);      
-                        System.out.println(ov);
+            new ChangeListener<Veiculo>() {
+                public void changed(ObservableValue<? extends Veiculo> ov, Veiculo old_val, Veiculo new_val) {
+                        //label.setText(new_val);     
                         itemSelecionado = new_val;
             }            
         });       
@@ -178,8 +179,8 @@ public class Gestao extends Application implements Observer{
         itemsTransito = FXCollections.observableArrayList(EmTransito.getInstance().getVeiculos());
         listViewTransito = new ListView<>(itemsTransito);
         listViewTransito.getSelectionModel().selectedItemProperty().addListener(
-            new ChangeListener<String>() {
-                public void changed(ObservableValue<? extends String> ov, String old_val, String new_val) {
+            new ChangeListener<Veiculo>() {
+                public void changed(ObservableValue<? extends Veiculo> ov, Veiculo old_val, Veiculo new_val) {
                         
                         //label.setText(new_val);
                         //System.out.println(new_val);
@@ -194,15 +195,12 @@ public class Gestao extends Application implements Observer{
         btnGaragem.setText("Colocar em Transito");
      
         btnGaragem.setOnAction((ActionEvent event) -> {  
-            if(itemSelecionado == ""){
+            if(itemSelecionado == null){
                 System.out.println("Não selecionado");
             }else{
-                StringTokenizer st = new StringTokenizer(itemSelecionado);
-                String placa = st.nextToken("Placa: ");            
-                int um = itemSelecionado.indexOf("Destino: ");          
-                String destino = itemSelecionado.substring(um + 9, itemSelecionado.length());
-                EmTransito.getInstance().viajem(new VeiculoMedio(placa, destino));
-                Garagem.getInstance().removeVeiculo(placa, destino);                
+
+                EmTransito.getInstance().viajem(itemSelecionado);
+                Garagem.getInstance().removeVeiculo(itemSelecionado.getPlaca());                
                
                 itemsGaragem = FXCollections.observableArrayList(Garagem.getInstance().getVeiculosByDestino(Destinos.getInstance().getLocal(destinoSelecionado).toString()));
                 listViewGaragem.setItems(itemsGaragem);
@@ -611,8 +609,8 @@ public class Gestao extends Application implements Observer{
 
     @Override
     public void update(Observable o, Object arg) {
-        String novoElemento = o.toString();
-        listViewGaragem.getItems().add(listViewGaragem.getItems().size(), novoElemento);
+        itemsGaragem = FXCollections.observableArrayList(Garagem.getInstance().getVeiculosByDestino(Destinos.getInstance().getLocal(destinoSelecionado).toString()));
+        listViewGaragem.setItems(itemsGaragem);
     }
 }
 

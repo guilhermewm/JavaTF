@@ -16,7 +16,7 @@ import java.util.Observable;
 public class Garagem extends Observable{
     private static Garagem instance = new Garagem();  
     
-    private List<String> veiculos;
+    private List<Veiculo> veiculos;
     private int cont = 0;
     private Veiculo v2 = new VeiculoGrande("ABC-9975", "Canoas");
     private Veiculo v3 = new VeiculoGrande("TGH-9975", "São Paulo");
@@ -27,32 +27,33 @@ public class Garagem extends Observable{
     
     private Garagem() {
         veiculos = new ArrayList<>();
-        veiculos.add(v2.toString());
-        veiculos.add(v3.toString());
-        veiculos.add(v4.toString());
-        veiculos.add(v5.toString());
-        veiculos.add(v6.toString());
-        veiculos.add(v7.toString());
+        veiculos.add(v2);
+        veiculos.add(v3);
+        veiculos.add(v4);
+        veiculos.add(v5);
+        veiculos.add(v6);
+        veiculos.add(v7);
     }
     
-    public List<String> getVeiculos(){
+    public List<Veiculo> getVeiculos(){
         return veiculos;
     } 
     
-    public List<String> getVeiculosByDestino(String destino){
-        List<String> lv = new ArrayList<>();
+    public List<Veiculo> getVeiculosByDestino(String destino){        
+        List<Veiculo> lv = new ArrayList<>();
         for(int x = 0; x < veiculos.size(); x++){
-            if(veiculos.get(x).contains(destino)){
+            if(veiculos.get(x).getDestino().equals(destino)){                
                 lv.add(veiculos.get(x));
             }
         }
+        
         return lv;
     }
     
-    public Boolean removeVeiculo(String placa, String destino){        
+    public Boolean removeVeiculo(String placa){        
         if(placa != null){
             for(int x = 0; x < veiculos.size(); x++){
-                if(veiculos.get(x).contains(placa) && veiculos.get(x).contains(destino)){
+                if(veiculos.get(x).getPlaca() == placa){
                     veiculos.remove(x);
                 }
             }            
@@ -65,7 +66,7 @@ public class Garagem extends Observable{
     public Boolean estaciona(Veiculo veiculo){
         if(veiculo != null){
             cont++;
-            veiculos.add(veiculo.toString());
+            veiculos.add(veiculo);
             setChanged();
             notifyObservers(veiculo);
             return true;

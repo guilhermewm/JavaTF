@@ -15,14 +15,14 @@ import java.util.Observable;
  */
 public class EmTransito extends Observable{
     private static EmTransito instance = null;    
-    private List<String> veiculos;
+    private List<Veiculo> veiculos;
     private int cont = 0;
     private Veiculo v = new VeiculoMedio("TT", "adeas");
-    private List<String> veiculosComTempo;
+    private List<Veiculo> veiculosComTempo;
 
     private EmTransito() {
         veiculos = new ArrayList<>();
-        veiculos.add(v.toString());
+        veiculos.add(v);
     }
     
     public List getVeiculos(){
@@ -33,7 +33,7 @@ public class EmTransito extends Observable{
     public Boolean viajem(Veiculo veiculo){
         if(veiculo != null){
             cont++;
-            veiculos.add(veiculo.toString());
+            veiculos.add(veiculo);
             setChanged();
             notifyObservers(veiculo);
             return true;
