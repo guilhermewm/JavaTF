@@ -15,4 +15,11 @@ public class Local{
     public int getDistancia(){
         return(distancia);
     }
+
+    @Override
+    public String toString() {
+        return ""+cidade;
+    }
+    
+    
 }

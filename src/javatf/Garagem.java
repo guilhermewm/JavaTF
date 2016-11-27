@@ -14,31 +14,45 @@ import java.util.Observable;
  * @author 16111019
  */
 public class Garagem extends Observable{
-    private static Garagem instance = new Garagem();    
+    private static Garagem instance = new Garagem();  
+    
     private List<String> veiculos;
     private int cont = 0;
-    private Veiculo v = new VeiculoGrande("IKG-9975", "Porto Alegre");
     private Veiculo v2 = new VeiculoGrande("ABC-9975", "Canoas");
-    private Veiculo v3 = new VeiculoGrande("TGH-9975", "Sei lá");
-    private Veiculo v4 = new VeiculoGrande("JKL-9975", "Teste");
+    private Veiculo v3 = new VeiculoGrande("TGH-9975", "São Paulo");
+    private Veiculo v4 = new VeiculoGrande("JKL-9975", "Curitiba");    
+    private Veiculo v5 = new VeiculoGrande("AFA-9975", "Campo Grande");
+    private Veiculo v6 = new VeiculoGrande("BBB-9975", "Rio de Janeiro");    
+    private Veiculo v7 = new VeiculoGrande("BAB-9975", "Rio de Janeiro");
     
     private Garagem() {
         veiculos = new ArrayList<>();
         veiculos.add(v2.toString());
         veiculos.add(v3.toString());
         veiculos.add(v4.toString());
-        veiculos.add(v.toString());
+        veiculos.add(v5.toString());
+        veiculos.add(v6.toString());
+        veiculos.add(v7.toString());
     }
     
     public List<String> getVeiculos(){
-        System.out.println("Veiculos na Garagem: " + veiculos);
         return veiculos;
     } 
     
-    public Boolean removeVeiculo(Veiculo v){        
-        if(v != null){
+    public List<String> getVeiculosByDestino(String destino){
+        List<String> lv = new ArrayList<>();
+        for(int x = 0; x < veiculos.size(); x++){
+            if(veiculos.get(x).contains(destino)){
+                lv.add(veiculos.get(x));
+            }
+        }
+        return lv;
+    }
+    
+    public Boolean removeVeiculo(String placa, String destino){        
+        if(placa != null){
             for(int x = 0; x < veiculos.size(); x++){
-                if(veiculos.get(x).equals(v.toString())){
+                if(veiculos.get(x).contains(placa) && veiculos.get(x).contains(destino)){
                     veiculos.remove(x);
                 }
             }            

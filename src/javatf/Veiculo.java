@@ -14,13 +14,16 @@ public abstract class Veiculo {
     private String destino;
     
     public int tempoViagem(int distancia){
-        int dias = (int)((distancia / getVelMedia())/8);            
+        int dias = (int)((distancia / getVelMedia())/8);  
+        if(dias <= 0){
+            dias = 1;
+        }
         return dias;
     }
 
     @Override
     public String toString() {
-        return "Placa: " + placa + " Destino: " + destino;
+        return "Placa: " + placa + "|   Destino: " + destino;
     }
     
     public double custoViagem(int distancia, double gasolina){

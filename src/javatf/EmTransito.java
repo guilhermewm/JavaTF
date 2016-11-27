@@ -18,6 +18,7 @@ public class EmTransito extends Observable{
     private List<String> veiculos;
     private int cont = 0;
     private Veiculo v = new VeiculoMedio("TT", "adeas");
+    private List<String> veiculosComTempo;
 
     private EmTransito() {
         veiculos = new ArrayList<>();
