@@ -61,9 +61,9 @@ public class Gestao extends Application implements Observer {
     private Label label;
     private Veiculo itemSelecionado;
     private Pedido itemSelecionadoPedido;
-    private ObservableList<Veiculo> itemsGaragem;
-    private ObservableList<Veiculo> itemsTransito;
-    private ObservableList<Pedido> itemsPedidos;
+    private ObservableList<Veiculo> itemsGaragem = null;
+    private ObservableList<Veiculo> itemsTransito = null;
+    private ObservableList<Pedido> itemsPedidos = null;
     private int destinoSelecionado;
 
     public Gestao() {
@@ -153,6 +153,7 @@ public class Gestao extends Application implements Observer {
                 if (new_val != null) {
                     //label.setText(new_val);
                     itemSelecionadoPedido = new_val;
+                    cb.setValue(itemSelecionadoPedido.getLocal());
                 } else if (Pedidos.getInstance().getPedidos().size() > 0) {
                     itemSelecionadoPedido = Pedidos.getInstance().getPedidos().get(0);
                 }
