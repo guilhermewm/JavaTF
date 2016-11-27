@@ -50,13 +50,9 @@ public class Garagem extends Observable{
         return lv;
     }
     
-    public Boolean removeVeiculo(String placa){        
-        if(placa != null){
-            for(int x = 0; x < veiculos.size(); x++){
-                if(veiculos.get(x).getPlaca() == placa){
-                    veiculos.remove(x);
-                }
-            }            
+    public Boolean removeVeiculo(Veiculo v){        
+        if(v != null){
+            veiculos.remove(v);
             return true;
         }else{
             return false;

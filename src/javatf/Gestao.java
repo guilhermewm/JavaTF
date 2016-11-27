@@ -1,4 +1,5 @@
 package javatf;
+import java.time.LocalDate;
 import java.util.List;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -198,10 +199,11 @@ public class Gestao extends Application implements Observer{
             if(itemSelecionado == null){
                 System.out.println("Não selecionado");
             }else{
-
+                System.out.println("Tempo de Viajem: " + itemSelecionado.tempoViagem(Destinos.getInstance().getDistancia(itemSelecionado.getDestino())));
+                
                 EmTransito.getInstance().viajem(itemSelecionado);
-                Garagem.getInstance().removeVeiculo(itemSelecionado.getPlaca());                
-               
+                Garagem.getInstance().removeVeiculo(itemSelecionado);                
+                
                 itemsGaragem = FXCollections.observableArrayList(Garagem.getInstance().getVeiculosByDestino(Destinos.getInstance().getLocal(destinoSelecionado).toString()));
                 listViewGaragem.setItems(itemsGaragem);
                 
@@ -604,7 +606,7 @@ public class Gestao extends Application implements Observer{
     }
         
     public static void main(String[] args) {
-        launch(args);           
+        launch(args);        
     }
 
     @Override
