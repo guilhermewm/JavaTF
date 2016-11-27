@@ -21,6 +21,12 @@ public abstract class Caixa {
         return (peso);
     }
 
+    @Override
+    public String toString() {
+        
+        return "Caixas{" + "ID: " + id + ", Peso: " + peso + '}';
+    }
+
     public abstract int getPesoMax();
 
     public abstract double getCusto();

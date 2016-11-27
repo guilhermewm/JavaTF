@@ -85,7 +85,8 @@ public class Pedido implements Iterable<Caixa> {
 
     @Override
     public String toString() {
-        return "Pedido{" + "id=" + id + ", dataPrev=" + dataPrev + ", dataEntrega=" + dataEntrega + ", local=" + local + ", caixas=" + caixas + '}';
+        
+        return "ID: " + id +  ",  Local: " + local + ", Caixas: " + caixas;
     }
 
 }

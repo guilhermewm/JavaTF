@@ -586,9 +586,9 @@ public class Gestao extends Application implements Observer {
         Veiculo vg = new VeiculoGrande("aaa", "BBB");
         Veiculo vm = new VeiculoMedio("aaa", "BBB");
         Veiculo vp = new VeiculoPequeno("aaa", "BBB");
-        graficoPizza.getData().addAll(new PieChart.Data("Veiculos Grandes", vg.getConsumo()),
-                new PieChart.Data("Veiculos Médios", vm.getConsumo()),
-                new PieChart.Data("Veiculos Pequenos", vp.getConsumo()));
+        graficoPizza.getData().addAll(new PieChart.Data("Veiculos Grandes", vg.getCapacidadeMax()),
+                new PieChart.Data("Veiculos Médios", vm.getCapacidadeMax()),
+                new PieChart.Data("Veiculos Pequenos", vp.getCapacidadeMax()));
         graficoPizza.setTitle("Lucros das entregas");
         graficoPizza.setPrefSize(400, 400);
 

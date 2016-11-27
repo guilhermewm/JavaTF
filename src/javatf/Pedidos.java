@@ -61,8 +61,8 @@ public class Pedidos extends Observable{
     }
 
     @Override
-    public String toString() {
-        return "Pedidos: " + pedidos;
+    public String toString() {   
+        return "" + pedidos;
     }
     
     public Pedido getProximo(){
