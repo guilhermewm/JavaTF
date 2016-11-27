@@ -13,8 +13,9 @@ import java.util.Observable;
  *
  * @author 16111019
  */
-public class EmTransito extends Observable{
-    private static EmTransito instance = null;    
+public class EmTransito extends Observable {
+
+    private static EmTransito instance = null;
     private List<Veiculo> veiculos;
     private int cont = 0;
     private Veiculo v = new VeiculoMedio("TT", "adeas");
@@ -24,20 +25,29 @@ public class EmTransito extends Observable{
         veiculos = new ArrayList<>();
         veiculos.add(v);
     }
-    
-    public List getVeiculos(){
+
+    public List getVeiculos() {
         System.out.println("Veiculos em Transito: " + veiculos);
         return veiculos;
-    } 
-    
-    public Boolean viajem(Veiculo veiculo){
-        if(veiculo != null){
+    }
+
+    public Boolean viajem(Veiculo veiculo) {
+        if (veiculo != null) {
             cont++;
             veiculos.add(veiculo);
             setChanged();
             notifyObservers(veiculo);
             return true;
-        }else{
+        } else {
+            return false;
+        }
+    }
+
+    public Boolean removeVeiculo(Veiculo v) {
+        if (v != null) {
+            veiculos.remove(v);
+            return true;
+        } else {
             return false;
         }
     }
@@ -46,12 +56,10 @@ public class EmTransito extends Observable{
     public String toString() {
         return "" + veiculos.get(cont);
     }
-    
-    
-    
-    public static EmTransito getInstance(){
-        if (instance == null ){
-            instance = new EmTransito();    
+
+    public static EmTransito getInstance() {
+        if (instance == null) {
+            instance = new EmTransito();
         }
         return (instance);
     }
