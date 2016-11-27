@@ -34,9 +34,35 @@ public class Pedidos extends Observable {
 
         p = new Pedido(LocalDate.of(2016, 12, 11), locais.getLocal(4));
         p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 500));
-        p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 300));
+        p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 600));
         p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 12));
-        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 57));
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 57));        
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));       
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));       
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));       
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));  
+        pedidos.add(p);
+        
+        p = new Pedido(LocalDate.of(2016, 12, 11), locais.getLocal(4));
+        p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 500));
+        p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 600));
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 12));
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 57));        
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));       
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));       
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));       
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));  
+        pedidos.add(p);
+        
+        p = new Pedido(LocalDate.of(2016, 12, 11), locais.getLocal(4));
+        p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 500));
+        p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 600));
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 12));
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 57));        
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));       
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));       
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));       
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));  
         pedidos.add(p);
     }
 

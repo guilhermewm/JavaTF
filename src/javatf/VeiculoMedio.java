@@ -28,4 +28,9 @@ public class VeiculoMedio extends Veiculo {
     public double getCapacidadeMax() {
         return (2500);
     }
+
+    @Override
+    public int getTomadas() {
+        return (6);
+    }
 }

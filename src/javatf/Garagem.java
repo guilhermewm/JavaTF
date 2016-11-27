@@ -14,7 +14,7 @@ public class Garagem extends Observable {
 
     private List<Veiculo> veiculos;
     private int cont = 0;
-    private Veiculo v2 = new VeiculoGrande("ABC-9975", "Canoas");
+    private Veiculo v2 = new VeiculoPequeno("ABC-9975", "Canoas");
     private Veiculo v3 = new VeiculoGrande("TGH-9975", "São Paulo");
     private Veiculo v4 = new VeiculoGrande("JKL-9975", "Curitiba");
     private Veiculo v5 = new VeiculoGrande("AFA-9975", "Campo Grande");

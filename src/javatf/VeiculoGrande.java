@@ -29,4 +29,9 @@ public class VeiculoGrande extends Veiculo {
         return (5000);
     }
 
+    @Override
+    public int getTomadas() {
+        return(9);
+    }
+
 }

@@ -28,4 +28,9 @@ public class VeiculoPequeno extends Veiculo {
     public double getCapacidadeMax() {
         return (1250);
     }
+
+    @Override
+    public int getTomadas() {
+        return (3);
+    }
 }

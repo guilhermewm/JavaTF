@@ -14,6 +14,7 @@ public abstract class Veiculo {
     private int tempoRestante;
     private List<Pedido> pedidos;
     private double pesoCarga;
+    private int tomadas;
 
     public int tempoViagem(int distancia) {
         int dias = (int) ((distancia / getVelMedia()) / 8);
@@ -62,12 +63,17 @@ public abstract class Veiculo {
         return pesoCarga;
     }
     
-    public boolean setPesoCarga(double peso){
-        if(peso+pesoCarga<=getCapacidadeMax()){
-            pesoCarga += peso;
-            return true;
+    public int setPesoCarga(double peso, int t){
+        if(peso+pesoCarga<=getCapacidadeMax()){            
+            if(t + tomadas <= getTomadas()){
+                pesoCarga += peso;
+                tomadas+= t;
+                return 1;
+            }else{
+                return 3;
+            }
         }
-        return false;
+        return 2;
     }
 
     public abstract double getConsumo();
@@ -77,12 +83,22 @@ public abstract class Veiculo {
     public abstract double getVelMedia();
 
     public abstract double getCapacidadeMax();
+    
+    public abstract int getTomadas();
 
     public void addPedido(Pedido itemSelecionadoPedido) {
         if (pedidos == null) {
             this.pedidos = new ArrayList<>();
         }
         pedidos.add(itemSelecionadoPedido);
+    }
+    
+    public void limpaPedidos() {
+        if(pedidos != null) { 
+            pesoCarga = 0;
+            tomadas = 0;
+            pedidos.clear();            
+        }
     }
 
 }

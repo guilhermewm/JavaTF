@@ -207,7 +207,7 @@ public class Gestao extends Application implements Observer {
                         veiculo = v;
                     }
                 }
-                if(adicionaPedidoAoVeiculo(itemSelecionadoPedido, veiculo)){
+                if(adicionaPedidoAoVeiculo(itemSelecionadoPedido, veiculo) == 1){
                     adicionaVeiculoAoPedido(itemSelecionadoPedido, veiculo);
                     removePedidoDaLista(itemSelecionadoPedido);
                     Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -215,11 +215,17 @@ public class Gestao extends Application implements Observer {
                     alert.setHeaderText("Pedido adicionado com sucesso");
                     alert.setContentText("Não esqueça de colocar o Veiculo em transito!");
                     alert.showAndWait();
-                }else{
+                }else if(adicionaPedidoAoVeiculo(itemSelecionadoPedido, veiculo) == 2){
                     Alert alert = new Alert(AlertType.INFORMATION);
                     alert.setTitle("Erro ao adicionar pedido");
                     alert.setHeaderText("Carga excedida");
                     alert.setContentText("O veiculo selecionado está cheio");
+                    alert.showAndWait();
+                }else{
+                    Alert alert = new Alert(AlertType.INFORMATION);
+                    alert.setTitle("Erro ao adicionar pedido");
+                    alert.setHeaderText("Numero de tomadas insuficientes");
+                    alert.setContentText("O veiculo selecionado não tem tomadas suficientes para a carga");
                     alert.showAndWait();
                 }             
             }
@@ -660,6 +666,8 @@ public class Gestao extends Application implements Observer {
     }
 
     private void atualizaListasVeiculos(Veiculo veiculo) {
+        veiculo.limpaPedidos();
+        
         EmTransito.getInstance().removeVeiculo(veiculo);
         Garagem.getInstance().viajem(veiculo);
 
@@ -667,14 +675,20 @@ public class Gestao extends Application implements Observer {
         listViewTransito.setItems(itemsTransito);
     }
 
-    private boolean adicionaPedidoAoVeiculo(Pedido itemSelecionadoPedido, Veiculo veiculo) {
-        if(veiculo.setPesoCarga(itemSelecionadoPedido.pesoTotal())){
+    private int adicionaPedidoAoVeiculo(Pedido itemSelecionadoPedido, Veiculo veiculo) {
+        int num = 0;
+        if(veiculo.setPesoCarga(itemSelecionadoPedido.pesoTotal(), itemSelecionadoPedido.qtdadeCaixasTipo(TipoCaixa.REFRIGERADA)) == 1){
             if (veiculo != null) {
+                System.out.println(itemSelecionadoPedido.qtdadeCaixasTipo(TipoCaixa.REFRIGERADA));
                 veiculo.addPedido(itemSelecionadoPedido);
-                return true;
+                num = 1;
             }
+        }else if(veiculo.setPesoCarga(itemSelecionadoPedido.pesoTotal(), itemSelecionadoPedido.qtdadeCaixasTipo(TipoCaixa.REFRIGERADA)) == 2){
+            num = 2;
+        }else{
+            num = 3;            
         }
-        return false;
+        return num;
     }
 
     private void adicionaVeiculoAoPedido(Pedido itemSelecionadoPedido, Veiculo veiculo) {
