@@ -202,11 +202,10 @@ public class Gestao extends Application implements Observer {
         btnSalvarPedido.setText("Salvar Pedido");
 
         btnSalvarPedido.setOnAction((ActionEvent event) -> {
-            if(itemSelecionadoPedido == null){
+            if(itemSelecionadoPedido == null || itemsGaragem == null){
                 System.out.println("Não selecionado");
             }else{
-                itemsGaragem = FXCollections.observableArrayList(Garagem.getInstance().getVeiculosByDestino(itemSelecionadoPedido.getLocal().toString()));
-                listViewGaragem.setItems(itemsGaragem);
+                
             }
         });
 
