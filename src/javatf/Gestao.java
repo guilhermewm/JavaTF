@@ -207,9 +207,21 @@ public class Gestao extends Application implements Observer {
                         veiculo = v;
                     }
                 }
-                adicionaPedidoAoVeiculo(itemSelecionadoPedido, veiculo);
-                adicionaVeiculoAoPedido(itemSelecionadoPedido, veiculo);
-                removePedidoDaLista(itemSelecionadoPedido);
+                if(adicionaPedidoAoVeiculo(itemSelecionadoPedido, veiculo)){
+                    adicionaVeiculoAoPedido(itemSelecionadoPedido, veiculo);
+                    removePedidoDaLista(itemSelecionadoPedido);
+                    Alert alert = new Alert(AlertType.CONFIRMATION);
+                    alert.setTitle("Pedido adicionado ao Veiculo");
+                    alert.setHeaderText("Pedido adicionado com sucesso");
+                    alert.setContentText("Não esqueça de colocar o Veiculo em transito!");
+                    alert.showAndWait();
+                }else{
+                    Alert alert = new Alert(AlertType.INFORMATION);
+                    alert.setTitle("Erro ao adicionar pedido");
+                    alert.setHeaderText("Carga excedida");
+                    alert.setContentText("O veiculo selecionado está cheio");
+                    alert.showAndWait();
+                }             
             }
         });
 
@@ -655,10 +667,14 @@ public class Gestao extends Application implements Observer {
         listViewTransito.setItems(itemsTransito);
     }
 
-    private void adicionaPedidoAoVeiculo(Pedido itemSelecionadoPedido, Veiculo veiculo) {
-        if (veiculo != null) {
-            veiculo.addPedido(itemSelecionadoPedido);
+    private boolean adicionaPedidoAoVeiculo(Pedido itemSelecionadoPedido, Veiculo veiculo) {
+        if(veiculo.setPesoCarga(itemSelecionadoPedido.pesoTotal())){
+            if (veiculo != null) {
+                veiculo.addPedido(itemSelecionadoPedido);
+                return true;
+            }
         }
+        return false;
     }
 
     private void adicionaVeiculoAoPedido(Pedido itemSelecionadoPedido, Veiculo veiculo) {

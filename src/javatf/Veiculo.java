@@ -13,6 +13,7 @@ public abstract class Veiculo {
     private String destino;
     private int tempoRestante;
     private List<Pedido> pedidos;
+    private double pesoCarga;
 
     public int tempoViagem(int distancia) {
         int dias = (int) ((distancia / getVelMedia()) / 8);
@@ -46,6 +47,7 @@ public abstract class Veiculo {
     public Veiculo(String placa, String destino) {
         this.placa = placa;
         this.destino = destino;
+        this.pesoCarga = 0;
     }
 
     public String getPlaca() {
@@ -54,6 +56,18 @@ public abstract class Veiculo {
 
     public String getDestino() {
         return destino;
+    }
+    
+    public double getPesoCarga(){
+        return pesoCarga;
+    }
+    
+    public boolean setPesoCarga(double peso){
+        if(peso+pesoCarga<=getCapacidadeMax()){
+            pesoCarga += peso;
+            return true;
+        }
+        return false;
     }
 
     public abstract double getConsumo();

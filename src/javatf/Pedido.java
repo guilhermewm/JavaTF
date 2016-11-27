@@ -60,6 +60,14 @@ public class Pedido implements Iterable<Caixa> {
         return (caixas.size());
     }
 
+    public double pesoTotal(){  
+        double peso=0;
+        for(Caixa cx :  caixas){
+          peso += cx.getPeso();  
+        }       
+        return peso;
+    }
+    
     public int qtdadeCaixasTipo(TipoCaixa tx) {
         int cont = 0;
         for (Caixa c : caixas) {
