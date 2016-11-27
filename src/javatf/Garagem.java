@@ -41,6 +41,7 @@ public class Garagem extends Observable {
     }
 
     public List<Veiculo> getVeiculosByDestino(String destino) {
+        
         List<Veiculo> lv = new ArrayList<>();
         for (int x = 0; x < veiculos.size(); x++) {
             if (veiculos.get(x).getDestino().equals(destino)) {
