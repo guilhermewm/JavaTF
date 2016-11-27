@@ -37,7 +37,7 @@ public abstract class Veiculo {
 
     @Override
     public String toString() {
-        return "Placa: " + placa + "|   Destino: " + destino;
+        return "Placa: " + placa + "   |   Destino: " + destino;
     }
 
     public double custoViagem(int distancia, double gasolina) {
