@@ -12,6 +12,7 @@ public class Pedido implements Iterable<Caixa> {
     private LocalDate dataEntrega;
     private Local local;
     private List<Caixa> caixas;
+    private Veiculo veiculoEntrega;
 
     public Pedido(LocalDate umaData, Local umLocal) {
         nroPed++;
@@ -86,6 +87,10 @@ public class Pedido implements Iterable<Caixa> {
     @Override
     public String toString() {
         return "ID: " + id + ",  Local: " + local + ", Caixas: " + caixas;
+    }
+
+    public void addVeiculoEntrega(Veiculo veiculo) {
+        this.veiculoEntrega = veiculo;
     }
 
 }

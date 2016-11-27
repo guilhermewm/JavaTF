@@ -1,5 +1,8 @@
 package javatf;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author lucas
@@ -9,6 +12,7 @@ public abstract class Veiculo {
     private String placa;
     private String destino;
     private int tempoRestante;
+    private List<Pedido> pedidos;
 
     public int tempoViagem(int distancia) {
         int dias = (int) ((distancia / getVelMedia()) / 8);
@@ -59,5 +63,12 @@ public abstract class Veiculo {
     public abstract double getVelMedia();
 
     public abstract double getCapacidadeMax();
+
+    public void addPedido(Pedido itemSelecionadoPedido) {
+        if (pedidos == null) {
+            this.pedidos = new ArrayList<>();
+        }
+        pedidos.add(itemSelecionadoPedido);
+    }
 
 }

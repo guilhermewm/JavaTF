@@ -1,6 +1,7 @@
 package javatf;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -149,12 +150,14 @@ public class Gestao extends Application implements Observer {
         listViewPedidos.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Pedido>() {
             @Override
             public void changed(ObservableValue<? extends Pedido> ov, Pedido old_val, Pedido new_val) {
-                //label.setText(new_val);     
-                itemSelecionadoPedido = new_val;
-
+                if (new_val != null) {
+                    //label.setText(new_val);
+                    itemSelecionadoPedido = new_val;
+                } else if (Pedidos.getInstance().getPedidos().size() > 0) {
+                    itemSelecionadoPedido = Pedidos.getInstance().getPedidos().get(0);
+                }
                 itemsGaragem = FXCollections.observableArrayList(Garagem.getInstance().getVeiculosByDestino(itemSelecionadoPedido.getLocal().toString()));
                 listViewGaragem.setItems(itemsGaragem);
-
             }
         });
 
@@ -197,7 +200,15 @@ public class Gestao extends Application implements Observer {
             if (itemSelecionadoPedido == null || itemsGaragem == null) {
                 System.out.println("Não selecionado");
             } else {
-
+                Veiculo veiculo = null;
+                for (Veiculo v : itemsGaragem) {
+                    if (v.getDestino().equals(itemSelecionadoPedido.getLocal().getCidade())) {
+                        veiculo = v;
+                    }
+                }
+                adicionaPedidoAoVeiculo(itemSelecionadoPedido, veiculo);
+                adicionaVeiculoAoPedido(itemSelecionadoPedido, veiculo);
+                removePedidoDaLista(itemSelecionadoPedido);
             }
         });
 
@@ -221,7 +232,6 @@ public class Gestao extends Application implements Observer {
 
                 itemsTransito = FXCollections.observableArrayList(EmTransito.getInstance().getVeiculos());
                 listViewTransito.setItems(itemsTransito);
-
             }
         });
 
@@ -643,4 +653,24 @@ public class Gestao extends Application implements Observer {
         itemsTransito = FXCollections.observableArrayList(EmTransito.getInstance().getVeiculos());
         listViewTransito.setItems(itemsTransito);
     }
+
+    private void adicionaPedidoAoVeiculo(Pedido itemSelecionadoPedido, Veiculo veiculo) {
+        if (veiculo != null) {
+            veiculo.addPedido(itemSelecionadoPedido);
+        }
+    }
+
+    private void adicionaVeiculoAoPedido(Pedido itemSelecionadoPedido, Veiculo veiculo) {
+        if (veiculo != null) {
+            itemSelecionadoPedido.addVeiculoEntrega(veiculo);
+        }
+    }
+
+    private void removePedidoDaLista(Pedido itemSelecionadoPedido) {
+        Pedidos.getInstance().getPedidos().remove(itemSelecionadoPedido);
+
+        itemsPedidos = FXCollections.observableArrayList(Pedidos.getInstance().getPedidos());
+        listViewPedidos.setItems(itemsPedidos);
+    }
+
 }
