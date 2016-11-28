@@ -12,7 +12,7 @@ public abstract class Veiculo {
     private String placa;
     private String destino;
     private int tempoRestante;
-    private List<Pedido> pedidos;
+    private List<Pedido> pedidos = null;
     private double pesoCarga;
     private int tomadas;
 
@@ -94,11 +94,16 @@ public abstract class Veiculo {
         pedidos.add(itemSelecionadoPedido);
     }
     
+    public List<Pedido> getPedidos(){
+        return this.pedidos;
+    }
+    
     public void limpaPedidos() {
         if(pedidos != null) { 
             pesoCarga = 0;
             tomadas = 0;
-            pedidos.clear();            
+            pedidos.clear();
+            pedidos = null;            
         }
     }
 

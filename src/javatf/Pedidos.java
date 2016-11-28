@@ -18,8 +18,6 @@ public class Pedidos extends Observable {
 
         Pedido p = new Pedido(LocalDate.of(2016, 12, 10), locais.getLocal(0));
         p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 450));
-        p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 850));
-        p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 940));
         p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 85));
         p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));
         p.addCaixa(cf.createInstance(TipoCaixa.PERECIVEL, 35, LocalDate.of(2016, 12, 12)));
@@ -32,7 +30,7 @@ public class Pedidos extends Observable {
         p.addCaixa(cf.createInstance(TipoCaixa.PERECIVEL, 25, LocalDate.of(2016, 12, 11)));
         pedidos.add(p);
 
-        p = new Pedido(LocalDate.of(2016, 12, 11), locais.getLocal(4));
+        p = new Pedido(LocalDate.of(2016, 11, 19), locais.getLocal(4));
         p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 500));
         p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 600));
         p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 12));
@@ -43,7 +41,7 @@ public class Pedidos extends Observable {
         p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));  
         pedidos.add(p);
         
-        p = new Pedido(LocalDate.of(2016, 12, 11), locais.getLocal(4));
+        p = new Pedido(LocalDate.of(2016, 11, 18), locais.getLocal(4));
         p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 500));
         p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 600));
         p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 12));
@@ -54,7 +52,7 @@ public class Pedidos extends Observable {
         p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));  
         pedidos.add(p);
         
-        p = new Pedido(LocalDate.of(2016, 12, 11), locais.getLocal(4));
+        p = new Pedido(LocalDate.of(2016, 11, 17), locais.getLocal(4));
         p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 500));
         p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 600));
         p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 12));
@@ -69,6 +67,17 @@ public class Pedidos extends Observable {
 
     public List<Pedido> getPedidos() {
         return pedidos;
+    }
+    
+    public int getPedidosAtrasados(LocalDate d) {
+        int p = 0;
+        for(int x =0; x < pedidos.size(); x++){
+            if(pedidos.get(x).getDataPrevista().isBefore(d)){
+                pedidos.get(x).setAtraso();
+                p += 1;
+            }
+        }
+        return p;
     }
 
     public Pedido getCorrente() {

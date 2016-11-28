@@ -13,6 +13,8 @@ public class Pedido implements Iterable<Caixa> {
     private Local local;
     private List<Caixa> caixas;
     private Veiculo veiculoEntrega;
+    private Boolean atraso = false;
+    private String stringAtraso = "";
 
     public Pedido(LocalDate umaData, Local umLocal) {
         nroPed++;
@@ -22,9 +24,27 @@ public class Pedido implements Iterable<Caixa> {
         local = umLocal;
         caixas = new LinkedList<Caixa>();
     }
+    
+    public void setAtraso(){
+        atraso = true;
+    }
+    
+    public Boolean getAtraso(){
+        return atraso;
+    }
 
     public String getId() {
         return (id);
+    }
+    
+    public String getStringAtraso(){
+        String t = "";
+        if(this.atraso == false){
+            t = stringAtraso = "em dia";
+        }else{
+            t = stringAtraso = "atrasado";
+        }
+        return t;
     }
 
     public LocalDate getDataPrevista() {
@@ -91,10 +111,11 @@ public class Pedido implements Iterable<Caixa> {
         }
         return (cont);
     }
-
+  
+    
     @Override
     public String toString() {
-        return "ID: " + id + ",  Local: " + local + ", Peso Total: "+ pesoTotal()+ ", Caixas Refrigeradas: "+ qtdadeCaixasTipo(TipoCaixa.REFRIGERADA)  + " Caixas: " + caixas;
+        return "ID: " + id + ",  Local: " + local + ", Peso Total: "+ pesoTotal()+ ", Caixas Refrigeradas: "+ qtdadeCaixasTipo(TipoCaixa.REFRIGERADA)  + " Atraso: " + getStringAtraso() + ", Caixas: " + caixas;
     }
 
     public void addVeiculoEntrega(Veiculo veiculo) {

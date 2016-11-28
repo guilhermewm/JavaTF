@@ -19,7 +19,9 @@ public class Garagem extends Observable {
     private Veiculo v4 = new VeiculoGrande("JKL-9975", "Curitiba");
     private Veiculo v5 = new VeiculoGrande("AFA-9975", "Campo Grande");
     private Veiculo v6 = new VeiculoGrande("BBB-9975", "Rio de Janeiro");
-    private Veiculo v7 = new VeiculoGrande("BAB-9975", "Rio de Janeiro");
+    private Veiculo v7 = new VeiculoGrande("BAB-9975", "Rio de Janeiro");    
+    private Veiculo v8 = new VeiculoMedio("XBA-9975", "Campo Grande");    
+    private Veiculo v9 = new VeiculoMedio("XBT-9975", "Campo Grande");
 
     private Garagem() {
         veiculos = new ArrayList<>();
@@ -29,6 +31,8 @@ public class Garagem extends Observable {
         veiculos.add(v5);
         veiculos.add(v6);
         veiculos.add(v7);
+        veiculos.add(v8);
+        veiculos.add(v9);
     }
 
     public List<Veiculo> getVeiculos() {

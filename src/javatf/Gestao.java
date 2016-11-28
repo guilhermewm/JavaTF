@@ -1,6 +1,5 @@
 package javatf;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Application;
@@ -61,10 +60,12 @@ public class Gestao extends Application implements Observer {
     private Label label;
     private Veiculo itemSelecionado;
     private Pedido itemSelecionadoPedido;
+    private List<Veiculo> v = new ArrayList<>();
     private ObservableList<Veiculo> itemsGaragem = null;
     private ObservableList<Veiculo> itemsTransito = null;
     private ObservableList<Pedido> itemsPedidos = null;
     private int destinoSelecionado;
+    private int pedidosAtrasados;
 
     public Gestao() {
     }
@@ -105,6 +106,8 @@ public class Gestao extends Application implements Observer {
         dataNext.setOnAction((ActionEvent event) -> {
             Calendario.getInstance().nextDay();
             labelDia.setText(Calendario.getInstance().getDate().toString());
+            pedidosAtrasados = Pedidos.getInstance().getPedidosAtrasados(Calendario.getInstance().getDate());           
+            listViewPedidos.refresh();
             atualizaDiasRestantesVeiculos();
             
         });
@@ -114,7 +117,7 @@ public class Gestao extends Application implements Observer {
         grid.add(titleDestinos, 0, rowNum++);
 
         ChoiceBox cb = new ChoiceBox(FXCollections.observableArrayList(
-                Destinos.getInstance().getDestinos()));
+        Destinos.getInstance().getDestinos()));
         grid.add(cb, 0, rowNum++);
 
         cb.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
@@ -178,8 +181,8 @@ public class Gestao extends Application implements Observer {
 
         listas.getChildren().add(listViewGaragem);
 
-        // Define o título tabela Veiculos em Transito
-        //Define os itens da tabela Garagem
+
+        //Define os itens da tabela EmTransito
         EmTransito.getInstance().addObserver(this);
         itemsTransito = FXCollections.observableArrayList(EmTransito.getInstance().getVeiculos());
         listViewTransito = new ListView<>(itemsTransito);
@@ -187,8 +190,7 @@ public class Gestao extends Application implements Observer {
                 new ChangeListener<Veiculo>() {
             public void changed(ObservableValue<? extends Veiculo> ov, Veiculo old_val, Veiculo new_val) {
 
-                //label.setText(new_val);
-                //System.out.println(new_val);
+                
             }
         });
 
@@ -199,25 +201,36 @@ public class Gestao extends Application implements Observer {
         btnSalvarPedido.setText("Salvar Pedido");
 
         btnSalvarPedido.setOnAction((ActionEvent event) -> {
-            if (itemSelecionadoPedido == null || itemsGaragem == null) {
-                System.out.println("Não selecionado");
-            } else {
-                Veiculo veiculo = null;
-                for (Veiculo v : itemsGaragem) {
-                    if (v.getDestino().equals(itemSelecionadoPedido.getLocal().getCidade())) {
-                        veiculo = v;
-                    }
-                }
-                
-                if(adicionaPedidoAoVeiculo(itemSelecionadoPedido, veiculo) == 1){
-                    adicionaVeiculoAoPedido(itemSelecionadoPedido, veiculo);
+            
+            if (itemSelecionadoPedido == null || itemSelecionado == null) {
+                if(itemSelecionadoPedido == null){
+                    Alert alert = new Alert(AlertType.CONFIRMATION);
+                    alert.setTitle("Pedido não selecionado");
+                    alert.setHeaderText("Pedido não selecionado");
+                    alert.setContentText("Não há nenhum pedido selecionado");
+                    alert.showAndWait();
+                }else if(itemSelecionado == null){
+                    Alert alert = new Alert(AlertType.CONFIRMATION);
+                    alert.setTitle("Veiculo não selecionado");
+                    alert.setHeaderText("Veiculo não selecionado");
+                    alert.setContentText("Não há nenhum veiculo selecionado");
+                    alert.showAndWait();
+                }                
+            } else {          
+                if(adicionaPedidoAoVeiculo(itemSelecionadoPedido, itemSelecionado) == 1){                    
+                    v.add(itemSelecionado);
+                    adicionaVeiculoAoPedido(itemSelecionadoPedido, itemSelecionado);
                     removePedidoDaLista(itemSelecionadoPedido);
                     Alert alert = new Alert(AlertType.CONFIRMATION);
                     alert.setTitle("Pedido adicionado ao Veiculo");
                     alert.setHeaderText("Pedido adicionado com sucesso");
                     alert.setContentText("Não esqueça de colocar o Veiculo em transito!");
                     alert.showAndWait();
-                }else if(adicionaPedidoAoVeiculo(itemSelecionadoPedido, veiculo) == 2){
+                    itemSelecionadoPedido = null;
+                    itemSelecionado = null;                    
+                    itemsGaragem = FXCollections.observableArrayList(Garagem.getInstance().getVeiculosByDestino(Destinos.getInstance().getLocal(destinoSelecionado).toString()));
+                    listViewGaragem.setItems(itemsGaragem);
+                }else if(adicionaPedidoAoVeiculo(itemSelecionadoPedido, itemSelecionado) == 2){
                     Alert alert = new Alert(AlertType.INFORMATION);
                     alert.setTitle("Erro ao adicionar pedido");
                     alert.setHeaderText("Carga excedida");
@@ -239,33 +252,32 @@ public class Gestao extends Application implements Observer {
         btnGaragem.setText("Colocar em Transito");
 
         btnGaragem.setOnAction((ActionEvent event) -> {
-            if (itemSelecionado == null) {
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Erro ao retirar veiculo da garagem");
-                alert.setHeaderText("Veiculo não selecionado");
-                alert.setContentText("Não há nenhum veiculo selecionado para ser retirado da garagem");
-                alert.showAndWait();
-            } else {
-                if(itemSelecionado.getPesoCarga() > 0){
-                    int tempoViagem = itemSelecionado.tempoViagem(Destinos.getInstance().getDistancia(itemSelecionado.getDestino()));
-                    itemSelecionado.setTempoRestante(tempoViagem);
-
-                    EmTransito.getInstance().viajem(itemSelecionado);
-                    Garagem.getInstance().removeVeiculo(itemSelecionado);
-
+                
+                if(v.isEmpty()){
+                    Alert alert = new Alert(AlertType.INFORMATION);
+                    alert.setTitle("Erro ao retirar veiculo da garagem");
+                    alert.setHeaderText("Sem pedidos");
+                    alert.setContentText("Não há nenhum veiculo com pedido");
+                    alert.showAndWait();
+                }else{
+                    for(int x = 0; x < v.size(); x++){
+                        if(v.get(x).getPedidos() != null){
+                            EmTransito.getInstance().viajem(v.get(x));
+                            Garagem.getInstance().removeVeiculo(v.get(x));
+                            
+                            int tempoViagem = v.get(x).tempoViagem(Destinos.getInstance().getDistancia(v.get(x).getDestino()));
+                            v.get(x).setTempoRestante(tempoViagem);
+                        }
+                    }                   
+                    
                     itemsGaragem = FXCollections.observableArrayList(Garagem.getInstance().getVeiculosByDestino(Destinos.getInstance().getLocal(destinoSelecionado).toString()));
                     listViewGaragem.setItems(itemsGaragem);
 
                     itemsTransito = FXCollections.observableArrayList(EmTransito.getInstance().getVeiculos());
                     listViewTransito.setItems(itemsTransito);
-                }else{
-                    Alert alert = new Alert(AlertType.INFORMATION);
-                    alert.setTitle("Erro ao retirar veiculo da garagem");
-                    alert.setHeaderText("Sem pedidos");
-                    alert.setContentText("O veiculo selecionado não tem nenhum pedido alocado");
-                    alert.showAndWait();
                 }
-            }
+                
+            
         });
 
         grid.add(btnGaragem, 0, rowNum++);
@@ -676,6 +688,7 @@ public class Gestao extends Application implements Observer {
             if (veiculo.getTempoRestante() == 0) {
                 atualizaListasVeiculos(veiculo);
                 veiculo.limpaPedidos();
+                v.clear();
             }
         }
     }
@@ -691,8 +704,7 @@ public class Gestao extends Application implements Observer {
     private int adicionaPedidoAoVeiculo(Pedido itemSelecionadoPedido, Veiculo veiculo) {
         int num = 0;
         if(veiculo.setPesoCarga(itemSelecionadoPedido.pesoTotal(), itemSelecionadoPedido.qtdadeCaixasTipo(TipoCaixa.REFRIGERADA)) == 1){
-            if (veiculo != null) {
-                System.out.println(itemSelecionadoPedido.qtdadeCaixasTipo(TipoCaixa.REFRIGERADA));
+            if (veiculo != null) {                
                 veiculo.addPedido(itemSelecionadoPedido);                
                 num = 1;
             }
@@ -706,7 +718,7 @@ public class Gestao extends Application implements Observer {
 
     private void adicionaVeiculoAoPedido(Pedido itemSelecionadoPedido, Veiculo veiculo) {
         if (veiculo != null) {
-            itemSelecionadoPedido.addVeiculoEntrega(veiculo);
+            itemSelecionadoPedido.addVeiculoEntrega(veiculo);            
         }
     }
 
