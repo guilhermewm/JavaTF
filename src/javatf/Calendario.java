@@ -21,6 +21,14 @@ public class Calendario {
     public void nextDay() {
         date = date.plusDays(1);
     }
+    
+    public LocalDate novoDia(LocalDate d){
+        return d.plusDays(1);
+    }
+    
+    public LocalDate diaAnterior(LocalDate d){
+        return d.plusDays(-1);
+    }
 
     public LocalDate getDate() {
         return this.date;

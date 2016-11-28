@@ -1,5 +1,6 @@
 package javatf;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Application;
@@ -267,6 +268,7 @@ public class Gestao extends Application implements Observer {
                             
                             int tempoViagem = v.get(x).tempoViagem(Destinos.getInstance().getDistancia(v.get(x).getDestino()));
                             v.get(x).setTempoRestante(tempoViagem);
+                            v.clear();
                         }
                     }                   
                     
@@ -434,7 +436,7 @@ public class Gestao extends Application implements Observer {
         dlgStage.showAndWait();
     }
 
-    private void criaDialogoPedAtend() {
+    private void criaDialogoPedAtr() {
         // Define o grid basico
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
@@ -443,36 +445,24 @@ public class Gestao extends Application implements Observer {
         grid.setPadding(new Insets(25, 25, 25, 25));
 
         LineChart graficoLinha = new LineChart<>(
-                new CategoryAxis(), new NumberAxis());
-        final String T1 = "T1";
-        final String T2 = "T2";
-        final String T3 = "T3";
-        final String T4 = "T4";
+        new CategoryAxis(), new NumberAxis());
+        LocalDate a = Calendario.getInstance().getDate();
+        LocalDate b = Calendario.getInstance().diaAnterior(a);
+        LocalDate c = Calendario.getInstance().novoDia(a);
+        
+        final String T1 = b.toString();
+        final String T2 = a.toString();
+        final String T3 = c.toString();
 
         XYChart.Series prod1 = new XYChart.Series();
-        prod1.setName("Produto 1");
+        prod1.setName("Pedidos Atrasados");
 
-        prod1.getData().add(new XYChart.Data(T1, 5));
-        prod1.getData().add(new XYChart.Data(T2, -2));
-        prod1.getData().add(new XYChart.Data(T3, 3));
-        prod1.getData().add(new XYChart.Data(T4, 15));
+        prod1.getData().add(new XYChart.Data(T1, Pedidos.getInstance().getPedidosAtrasados(b)));
+        prod1.getData().add(new XYChart.Data(T2, Pedidos.getInstance().getPedidosAtrasados(a)));
+        prod1.getData().add(new XYChart.Data(T3, Pedidos.getInstance().getPedidosAtrasados(c)));
 
-        XYChart.Series prod2 = new XYChart.Series();
-        prod2.setName("Produto 2");
-
-        prod2.getData().add(new XYChart.Data(T1, -5));
-        prod2.getData().add(new XYChart.Data(T2, -1));
-        prod2.getData().add(new XYChart.Data(T3, 12));
-        prod2.getData().add(new XYChart.Data(T4, 8));
-
-        XYChart.Series prod3 = new XYChart.Series();
-        prod3.setName("Produto 3");
-
-        prod3.getData().add(new XYChart.Data(T1, 12));
-        prod3.getData().add(new XYChart.Data(T2, 15));
-        prod3.getData().add(new XYChart.Data(T3, 12));
-        prod3.getData().add(new XYChart.Data(T4, 20));
-        graficoLinha.getData().addAll(prod1, prod2, prod3);
+       
+        graficoLinha.getData().addAll(prod1);
         graficoLinha.setPrefSize(400, 400);
 
         grid.add(graficoLinha, 0, 0);
@@ -499,7 +489,7 @@ public class Gestao extends Application implements Observer {
         dlgStage.showAndWait();
     }
 
-    private void criaDialogoPedAtr() {
+    private void criaDialogoPedAtend() {
         // Define o grid basico
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);

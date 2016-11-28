@@ -70,6 +70,7 @@ public class Pedidos extends Observable {
     }
     
     public int getPedidosAtrasados(LocalDate d) {
+        System.out.println(d);
         int p = 0;
         for(int x =0; x < pedidos.size(); x++){
             if(pedidos.get(x).getDataPrevista().isBefore(d)){
