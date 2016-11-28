@@ -59,10 +59,7 @@ public class Pedidos extends Observable {
         p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 600));
         p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 12));
         p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 57));        
-        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));       
-        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));       
-        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));       
-        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));  
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));   
         pedidos.add(p);
     }
 

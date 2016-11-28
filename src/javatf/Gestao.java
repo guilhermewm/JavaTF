@@ -106,6 +106,7 @@ public class Gestao extends Application implements Observer {
             Calendario.getInstance().nextDay();
             labelDia.setText(Calendario.getInstance().getDate().toString());
             atualizaDiasRestantesVeiculos();
+            
         });
 
         // Destinos
@@ -207,6 +208,7 @@ public class Gestao extends Application implements Observer {
                         veiculo = v;
                     }
                 }
+                
                 if(adicionaPedidoAoVeiculo(itemSelecionadoPedido, veiculo) == 1){
                     adicionaVeiculoAoPedido(itemSelecionadoPedido, veiculo);
                     removePedidoDaLista(itemSelecionadoPedido);
@@ -238,19 +240,31 @@ public class Gestao extends Application implements Observer {
 
         btnGaragem.setOnAction((ActionEvent event) -> {
             if (itemSelecionado == null) {
-                System.out.println("Não selecionado");
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Erro ao retirar veiculo da garagem");
+                alert.setHeaderText("Veiculo não selecionado");
+                alert.setContentText("Não há nenhum veiculo selecionado para ser retirado da garagem");
+                alert.showAndWait();
             } else {
-                int tempoViagem = itemSelecionado.tempoViagem(Destinos.getInstance().getDistancia(itemSelecionado.getDestino()));
-                itemSelecionado.setTempoRestante(tempoViagem);
+                if(itemSelecionado.getPesoCarga() > 0){
+                    int tempoViagem = itemSelecionado.tempoViagem(Destinos.getInstance().getDistancia(itemSelecionado.getDestino()));
+                    itemSelecionado.setTempoRestante(tempoViagem);
 
-                EmTransito.getInstance().viajem(itemSelecionado);
-                Garagem.getInstance().removeVeiculo(itemSelecionado);
+                    EmTransito.getInstance().viajem(itemSelecionado);
+                    Garagem.getInstance().removeVeiculo(itemSelecionado);
 
-                itemsGaragem = FXCollections.observableArrayList(Garagem.getInstance().getVeiculosByDestino(Destinos.getInstance().getLocal(destinoSelecionado).toString()));
-                listViewGaragem.setItems(itemsGaragem);
+                    itemsGaragem = FXCollections.observableArrayList(Garagem.getInstance().getVeiculosByDestino(Destinos.getInstance().getLocal(destinoSelecionado).toString()));
+                    listViewGaragem.setItems(itemsGaragem);
 
-                itemsTransito = FXCollections.observableArrayList(EmTransito.getInstance().getVeiculos());
-                listViewTransito.setItems(itemsTransito);
+                    itemsTransito = FXCollections.observableArrayList(EmTransito.getInstance().getVeiculos());
+                    listViewTransito.setItems(itemsTransito);
+                }else{
+                    Alert alert = new Alert(AlertType.INFORMATION);
+                    alert.setTitle("Erro ao retirar veiculo da garagem");
+                    alert.setHeaderText("Sem pedidos");
+                    alert.setContentText("O veiculo selecionado não tem nenhum pedido alocado");
+                    alert.showAndWait();
+                }
             }
         });
 
@@ -661,13 +675,12 @@ public class Gestao extends Application implements Observer {
             veiculo.decrementaDia();
             if (veiculo.getTempoRestante() == 0) {
                 atualizaListasVeiculos(veiculo);
+                veiculo.limpaPedidos();
             }
         }
     }
 
     private void atualizaListasVeiculos(Veiculo veiculo) {
-        veiculo.limpaPedidos();
-        
         EmTransito.getInstance().removeVeiculo(veiculo);
         Garagem.getInstance().viajem(veiculo);
 
@@ -680,7 +693,7 @@ public class Gestao extends Application implements Observer {
         if(veiculo.setPesoCarga(itemSelecionadoPedido.pesoTotal(), itemSelecionadoPedido.qtdadeCaixasTipo(TipoCaixa.REFRIGERADA)) == 1){
             if (veiculo != null) {
                 System.out.println(itemSelecionadoPedido.qtdadeCaixasTipo(TipoCaixa.REFRIGERADA));
-                veiculo.addPedido(itemSelecionadoPedido);
+                veiculo.addPedido(itemSelecionadoPedido);                
                 num = 1;
             }
         }else if(veiculo.setPesoCarga(itemSelecionadoPedido.pesoTotal(), itemSelecionadoPedido.qtdadeCaixasTipo(TipoCaixa.REFRIGERADA)) == 2){

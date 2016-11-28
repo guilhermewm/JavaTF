@@ -36,9 +36,10 @@ public abstract class Veiculo {
         this.tempoRestante = dias;
     }
 
+    
     @Override
     public String toString() {
-        return "Placa: " + placa + "   |   Destino: " + destino;
+        return "Placa: " + placa + ", Destino: " + destino + ", Peso restante: " + (getCapacidadeMax()-pesoCarga) + ", Tomadas restantes: " + (getTomadas()-tomadas);
     }
 
     public double custoViagem(int distancia, double gasolina) {

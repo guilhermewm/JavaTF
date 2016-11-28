@@ -24,7 +24,7 @@ public abstract class Caixa {
     @Override
     public String toString() {
 
-        return "Caixas{" + "ID: " + id + ", Peso: " + peso + '}';
+        return "Caixas{" + "Peso total: " + id + ", Peso: " + peso + '}';
     }
 
     public abstract int getPesoMax();

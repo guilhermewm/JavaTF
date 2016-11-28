@@ -94,7 +94,7 @@ public class Pedido implements Iterable<Caixa> {
 
     @Override
     public String toString() {
-        return "ID: " + id + ",  Local: " + local + ", Caixas: " + caixas;
+        return "ID: " + id + ",  Local: " + local + ", Peso Total: "+ pesoTotal()+ ", Caixas Refrigeradas: "+ qtdadeCaixasTipo(TipoCaixa.REFRIGERADA)  + " Caixas: " + caixas;
     }
 
     public void addVeiculoEntrega(Veiculo veiculo) {
