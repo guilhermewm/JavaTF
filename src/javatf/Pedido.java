@@ -29,7 +29,7 @@ public class Pedido implements Iterable<Caixa> {
         atraso = true;
     }
     
-    public Boolean getAtraso(){
+    public Boolean getAtraso(){        
         return atraso;
     }
 

@@ -2,6 +2,7 @@ package javatf;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -27,9 +28,11 @@ import javafx.scene.text.*;
 import javafx.stage.Stage;
 import javafx.stage.Modality;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.StringTokenizer;
+import java.util.TreeMap;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -109,8 +112,8 @@ public class Gestao extends Application implements Observer {
             labelDia.setText(Calendario.getInstance().getDate().toString());
             pedidosAtrasados = Pedidos.getInstance().getPedidosAtrasados(Calendario.getInstance().getDate());           
             listViewPedidos.refresh();
-            atualizaDiasRestantesVeiculos();
-            
+            atualizaDiasRestantesVeiculos();            
+            PedidosAtrasados.getInstance().criaGrafico(Calendario.getInstance().getDate(), itemsPedidos);        
         });
 
         // Destinos
@@ -268,7 +271,7 @@ public class Gestao extends Application implements Observer {
                             
                             int tempoViagem = v.get(x).tempoViagem(Destinos.getInstance().getDistancia(v.get(x).getDestino()));
                             v.get(x).setTempoRestante(tempoViagem);
-                            v.clear();
+                            //v.clear();
                         }
                     }                   
                     
@@ -442,26 +445,20 @@ public class Gestao extends Application implements Observer {
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(20);
         grid.setVgap(10);
-        grid.setPadding(new Insets(25, 25, 25, 25));
-
+        grid.setPadding(new Insets(25, 25, 25, 25));          
+        
         LineChart graficoLinha = new LineChart<>(
         new CategoryAxis(), new NumberAxis());
-        LocalDate a = Calendario.getInstance().getDate();
-        LocalDate b = Calendario.getInstance().diaAnterior(a);
-        LocalDate c = Calendario.getInstance().novoDia(a);
-        
-        final String T1 = b.toString();
-        final String T2 = a.toString();
-        final String T3 = c.toString();
 
         XYChart.Series prod1 = new XYChart.Series();
         prod1.setName("Pedidos Atrasados");
-
-        prod1.getData().add(new XYChart.Data(T1, Pedidos.getInstance().getPedidosAtrasados(b)));
-        prod1.getData().add(new XYChart.Data(T2, Pedidos.getInstance().getPedidosAtrasados(a)));
-        prod1.getData().add(new XYChart.Data(T3, Pedidos.getInstance().getPedidosAtrasados(c)));
-
-       
+        
+        for (LocalDate key: PedidosAtrasados.getInstance().getAtrasados().keySet()) {
+            if(PedidosAtrasados.getInstance().getAtrasados().get(key).intValue() > 0) {
+                prod1.getData().add(new XYChart.Data(key.toString(), PedidosAtrasados.getInstance().getAtrasados().get(key).intValue()));   
+            }
+        }
+        
         graficoLinha.getData().addAll(prod1);
         graficoLinha.setPrefSize(400, 400);
 
@@ -483,7 +480,7 @@ public class Gestao extends Application implements Observer {
         // Adiciona o painel a cena e exibe        
         Scene scene = new Scene(grid);
         dlgStage = new Stage();
-        dlgStage.setTitle("Pedidos Atendidos Por Dia");
+        dlgStage.setTitle("Pedidos Atrasados Por Dia");
         dlgStage.initModality(Modality.APPLICATION_MODAL);
         dlgStage.setScene(scene);
         dlgStage.showAndWait();
