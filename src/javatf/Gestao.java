@@ -262,7 +262,7 @@ public class Gestao extends Application implements Observer {
         HBox groupBtnPed = new HBox(30);
         groupBtnPed.getChildren().add(btnSalvarPedido);
         
-        Button btView = new Button();
+       /* Button btView = new Button();
         btView.setText("Visualizar");
         btView.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -270,7 +270,7 @@ public class Gestao extends Application implements Observer {
                 criaDialogoPedido();
             }
         });        
-        groupBtnPed.getChildren().add(btView);
+        groupBtnPed.getChildren().add(btView);*/
         
         grid.add(groupBtnPed, 0, rowNum);
 
@@ -336,7 +336,7 @@ public class Gestao extends Application implements Observer {
 */
         
         HBox groupGraficos = new HBox(30);
-        
+      /*  
         Button pedAtendDia = new Button();
         pedAtendDia.setText("Ped. Atend. p/ dia");
         groupGraficos.getChildren().add(pedAtendDia);
@@ -345,7 +345,7 @@ public class Gestao extends Application implements Observer {
             public void handle(ActionEvent e) {
                 criaDialogoPedAtend();
             }
-        });
+        });*/
 
         Button pedAtrDia = new Button();
         pedAtrDia.setText("Ped. Atrasados. p/ dia");
@@ -356,7 +356,7 @@ public class Gestao extends Application implements Observer {
                 criaDialogoPedAtr();
             }
         });
-
+/*
         Button TxSucces = new Button();
         TxSucces.setText("Taxa de sucesso");
         groupGraficos.getChildren().add(TxSucces);
@@ -375,7 +375,7 @@ public class Gestao extends Application implements Observer {
             public void handle(ActionEvent e) {
                 criaDialogoTxOcup();
             }
-        });
+        });*/
 
         Button lucro = new Button();
         lucro.setText("Lucratividade");
