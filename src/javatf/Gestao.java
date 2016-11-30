@@ -117,12 +117,15 @@ public class Gestao extends Application implements Observer {
         });
 
         // Destinos
+        HBox destino = new HBox(30);
         Text titleDestinos = new Text("Destino:");
-        grid.add(titleDestinos, 0, rowNum++);
+        destino.getChildren().add(titleDestinos);
+        //grid.add(titleDestinos, 0, rowNum++);
 
         ChoiceBox cb = new ChoiceBox(FXCollections.observableArrayList(
         Destinos.getInstance().getDestinos()));
-        grid.add(cb, 0, rowNum++);
+        destino.getChildren().add(cb);
+        grid.add(destino, 0, rowNum++);
 
         cb.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
@@ -137,20 +140,23 @@ public class Gestao extends Application implements Observer {
         }
         );
 
-        HBox titulos = new HBox(30);
+        //HBox titulos = new HBox(30);
         // Define o título tabela Garagem
         Text titlePedidos = new Text("Pedidos disponíveis:");
-        titulos.getChildren().add(titlePedidos);
-
+        //titulos.getChildren().add(titlePedidos);
+        grid.add(titlePedidos, 0, rowNum);
+        
+        
         Text titleGaragem = new Text("Veiculos Disponiveis:");
-        titulos.getChildren().add(titleGaragem);
-
+        //titulos.getChildren().add(titleGaragem);
+        grid.add(titleGaragem, 1, rowNum);
+        
         Text titleEmTransito = new Text("Veiculos em transito:");
-        titulos.getChildren().add(titleEmTransito);
+        //titulos.getChildren().add(titleEmTransito);
+        grid.add(titleEmTransito, 2, rowNum++);
+        //grid.add(titulos, 0, rowNum++);
 
-        grid.add(titulos, 0, rowNum++);
-
-        HBox listas = new HBox(30);
+        //HBox listas = new HBox(30);
         //Define os itens da tabela Pedidos
         Pedidos.getInstance().addObserver(this);
         itemsPedidos = FXCollections.observableArrayList(Pedidos.getInstance().getPedidos());
@@ -170,7 +176,8 @@ public class Gestao extends Application implements Observer {
             }
         });
 
-        listas.getChildren().add(listViewPedidos);
+        grid.add(listViewPedidos, 0, rowNum);
+        //listas.getChildren().add(listViewPedidos);
 
         //Define os itens da tabela Garagem
         Garagem.getInstance().addObserver(this);
@@ -182,8 +189,9 @@ public class Gestao extends Application implements Observer {
                 itemSelecionado = new_val;
             }
         });
-
-        listas.getChildren().add(listViewGaragem);
+        
+        grid.add(listViewGaragem, 1, rowNum);
+        //listas.getChildren().add(listViewGaragem);
 
 
         //Define os itens da tabela EmTransito
@@ -198,8 +206,9 @@ public class Gestao extends Application implements Observer {
             }
         });
 
-        listas.getChildren().add(listViewTransito);
-        grid.add(listas, 0, rowNum++);
+        grid.add(listViewTransito, 2, rowNum++);
+       // listas.getChildren().add(listViewTransito);
+        //sgrid.add(listas, 0, rowNum++);
 
         Button btnSalvarPedido = new Button();
         btnSalvarPedido.setText("Salvar Pedido");
@@ -249,8 +258,21 @@ public class Gestao extends Application implements Observer {
                 }             
             }
         });
-
-        grid.add(btnSalvarPedido, 0, rowNum++);
+        
+        HBox groupBtnPed = new HBox(30);
+        groupBtnPed.getChildren().add(btnSalvarPedido);
+        
+        Button btView = new Button();
+        btView.setText("Visualizar");
+        btView.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                criaDialogoPedido();
+            }
+        });        
+        groupBtnPed.getChildren().add(btView);
+        
+        grid.add(groupBtnPed, 0, rowNum);
 
         Button btnGaragem = new Button();
         btnGaragem.setText("Colocar em Transito");
@@ -287,17 +309,10 @@ public class Gestao extends Application implements Observer {
             
         });
 
-        grid.add(btnGaragem, 0, rowNum++);
+        grid.add(btnGaragem, 1, rowNum++);
 
-        Button btView = new Button();
-        btView.setText("Visualizar");
-        btView.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                criaDialogoPedido();
-            }
-        });
-
+        
+/*
         Button btClose = new Button();
         btClose.setText("Fechar");
         btClose.setOnAction(new EventHandler<ActionEvent>() {
@@ -318,10 +333,13 @@ public class Gestao extends Application implements Observer {
         hbClose.setAlignment(Pos.BOTTOM_RIGHT);
         hbClose.getChildren().add(btClose);
         grid.add(hbClose, 1, rowNum++);
-
+*/
+        
+        HBox groupGraficos = new HBox(30);
+        
         Button pedAtendDia = new Button();
         pedAtendDia.setText("Ped. Atend. p/ dia");
-        grid.add(pedAtendDia, 0, rowNum);
+        groupGraficos.getChildren().add(pedAtendDia);
         pedAtendDia.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -331,7 +349,7 @@ public class Gestao extends Application implements Observer {
 
         Button pedAtrDia = new Button();
         pedAtrDia.setText("Ped. Atrasados. p/ dia");
-        grid.add(pedAtrDia, 1, rowNum++);
+        groupGraficos.getChildren().add(pedAtrDia);
         pedAtrDia.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -341,7 +359,7 @@ public class Gestao extends Application implements Observer {
 
         Button TxSucces = new Button();
         TxSucces.setText("Taxa de sucesso");
-        grid.add(TxSucces, 0, rowNum);
+        groupGraficos.getChildren().add(TxSucces);
         TxSucces.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -351,7 +369,7 @@ public class Gestao extends Application implements Observer {
 
         Button TxOcup = new Button();
         TxOcup.setText("Taxa de ocupação");
-        grid.add(TxOcup, 1, rowNum++);
+        groupGraficos.getChildren().add(TxOcup);
         TxOcup.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -361,13 +379,15 @@ public class Gestao extends Application implements Observer {
 
         Button lucro = new Button();
         lucro.setText("Lucratividade");
-        grid.add(lucro, 0, rowNum++);
+        groupGraficos.getChildren().add(lucro);
         lucro.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
                 criaDialogoLucro();
             }
         });
+        
+        grid.add(groupGraficos, 0, rowNum++);
 
         // Adiciona o painel a cena e exibe        
         Scene scene = new Scene(grid);
