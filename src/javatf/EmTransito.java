@@ -14,6 +14,7 @@ public class EmTransito extends Observable {
     private List<Veiculo> veiculos;
     private int cont = 0;
     private List<Veiculo> veiculosComTempo;
+    private double lucro;
 
     private EmTransito() {
         veiculos = new ArrayList<>();
@@ -37,6 +38,12 @@ public class EmTransito extends Observable {
 
     public Boolean removeVeiculo(Veiculo v) {
         if (v != null) {
+            for(int i = 0; i < v.getPedidos().size(); i++){
+                int qtCaixas = v.getPedidos().get(i).qtdadeCaixas();                
+                double pesoTotal = v.getPedidos().get(i).pesoTotal();                
+                lucro += ((pesoTotal/100)*300) - v.custoViagem(Destinos.getInstance().getDistancia(v.getDestino()), 3.2);       
+            }            
+            System.out.println(lucro);
             veiculos.remove(v);
             return true;
         } else {

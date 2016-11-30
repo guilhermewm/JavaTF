@@ -280,6 +280,8 @@ public class Gestao extends Application implements Observer {
 
                     itemsTransito = FXCollections.observableArrayList(EmTransito.getInstance().getVeiculos());
                     listViewTransito.setItems(itemsTransito);
+                    
+                    v.clear();
                 }
                 
             

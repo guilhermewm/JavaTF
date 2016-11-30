@@ -45,6 +45,8 @@ public abstract class Veiculo {
     public double custoViagem(int distancia, double gasolina) {
         return ((distancia / getConsumo()) * gasolina) * 1.2;
     }
+    
+    
 
     public Veiculo(String placa, String destino) {
         this.placa = placa;

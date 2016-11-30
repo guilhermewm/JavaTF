@@ -14,9 +14,6 @@ public class PedidosAtrasados {
     public void criaGrafico(LocalDate hoje, List<Pedido> pedido ){
         int count = 0;
         
-//        boolean verdade = pedido.get(i).getDataPrevista().equals(Calendario.getInstance().diaAnterior(hoje));
-        
-        
         for(int i=0;i<pedido.size();i++) {            
             boolean verdade = pedido.get(i).getDataPrevista().isEqual(Calendario.getInstance().diaAnterior(hoje));
             if(pedido.get(i).getAtraso() && verdade) {
