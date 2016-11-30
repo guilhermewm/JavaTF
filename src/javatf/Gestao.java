@@ -363,7 +363,7 @@ public class Gestao extends Application implements Observer {
         TxSucces.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                criaDialogoTxSucces();
+                criaDialogoLucratividade();
             }
         });
 
@@ -383,7 +383,7 @@ public class Gestao extends Application implements Observer {
         lucro.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                criaDialogoLucro();
+                criaDialogoLucratividade();
             }
         });
         
@@ -573,7 +573,7 @@ public class Gestao extends Application implements Observer {
         dlgStage.showAndWait();
     }
 
-    private void criaDialogoTxSucces() {
+    private void criaDialogoLucratividade() {
         // Define o grid basico
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
@@ -581,7 +581,7 @@ public class Gestao extends Application implements Observer {
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
 
-        grid.add(new Label("Teste caixa dialogo:"), 0, 0);
+        grid.add(new Label("Lucratividade: " + EmTransito.getInstance().getLucroString()), 0, 0);
 
         Button btClose = new Button();
         btClose.setText("Fechar");
@@ -599,7 +599,7 @@ public class Gestao extends Application implements Observer {
         // Adiciona o painel a cena e exibe        
         Scene scene = new Scene(grid);
         dlgStage = new Stage();
-        dlgStage.setTitle("Taxa de sucesso");
+        dlgStage.setTitle("Taxa de lucro");
         dlgStage.initModality(Modality.APPLICATION_MODAL);
         dlgStage.setScene(scene);
         dlgStage.showAndWait();

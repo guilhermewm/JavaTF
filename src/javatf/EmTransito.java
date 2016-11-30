@@ -51,6 +51,12 @@ public class EmTransito extends Observable {
         }
     }
 
+  
+    
+    public String getLucroString(){
+        return "" + lucro;
+    }
+
     @Override
     public String toString() {
         return "" + veiculos.get(cont);
