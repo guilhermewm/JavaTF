@@ -2,20 +2,14 @@ package javatf;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
@@ -23,34 +17,22 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.layout.StackPane;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
 import javafx.stage.Modality;
-import java.util.Locale;
-import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.StringTokenizer;
-import java.util.TreeMap;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.media.AudioClip;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.VBox;
-import static jdk.nashorn.internal.objects.NativeString.substring;
 
 public class Gestao extends Application implements Observer {
 
@@ -65,6 +47,7 @@ public class Gestao extends Application implements Observer {
     private Veiculo itemSelecionado;
     private Pedido itemSelecionadoPedido;
     private List<Veiculo> v = new ArrayList<>();
+    private List<Pedido> pedidosEntregues = new ArrayList<>();
     private ObservableList<Veiculo> itemsGaragem = null;
     private ObservableList<Veiculo> itemsTransito = null;
     private ObservableList<Pedido> itemsPedidos = null;
@@ -113,7 +96,9 @@ public class Gestao extends Application implements Observer {
             pedidosAtrasados = Pedidos.getInstance().getPedidosAtrasados(Calendario.getInstance().getDate());           
             listViewPedidos.refresh();
             atualizaDiasRestantesVeiculos();            
-            PedidosAtrasados.getInstance().criaGrafico(Calendario.getInstance().getDate(), itemsPedidos);        
+            PedidosAtrasados.getInstance().criaGrafico(Calendario.getInstance().getDate(), itemsPedidos);
+            PedidosAtendidos.getInstance().criaGrafico(Calendario.getInstance().getDate(), pedidosEntregues);
+            pedidosEntregues.clear();
         });
 
         // Destinos
@@ -336,7 +321,7 @@ public class Gestao extends Application implements Observer {
 */
         
         HBox groupGraficos = new HBox(30);
-      /*  
+        
         Button pedAtendDia = new Button();
         pedAtendDia.setText("Ped. Atend. p/ dia");
         groupGraficos.getChildren().add(pedAtendDia);
@@ -345,7 +330,7 @@ public class Gestao extends Application implements Observer {
             public void handle(ActionEvent e) {
                 criaDialogoPedAtend();
             }
-        });*/
+        });
 
         Button pedAtrDia = new Button();
         pedAtrDia.setText("Ped. Atrasados. p/ dia");
@@ -356,26 +341,7 @@ public class Gestao extends Application implements Observer {
                 criaDialogoPedAtr();
             }
         });
-/*
-        Button TxSucces = new Button();
-        TxSucces.setText("Taxa de sucesso");
-        groupGraficos.getChildren().add(TxSucces);
-        TxSucces.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                criaDialogoLucratividade();
-            }
-        });
 
-        Button TxOcup = new Button();
-        TxOcup.setText("Taxa de ocupação");
-        groupGraficos.getChildren().add(TxOcup);
-        TxOcup.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                criaDialogoTxOcup();
-            }
-        });*/
 
         Button lucro = new Button();
         lucro.setText("Lucratividade");
@@ -514,42 +480,24 @@ public class Gestao extends Application implements Observer {
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(20);
         grid.setVgap(10);
-        grid.setPadding(new Insets(25, 25, 25, 25));
+        grid.setPadding(new Insets(25, 25, 25, 25));          
+        
+        LineChart graficoLinha = new LineChart<>(
+        new CategoryAxis(), new NumberAxis());
 
-        BarChart graficoBarra = new BarChart<>(
-                new CategoryAxis(), new NumberAxis());
-
-        final String T1 = "T1";
-        final String T2 = "T2";
-        final String T3 = "T3";
-        final String T4 = "T4";
         XYChart.Series prod1 = new XYChart.Series();
-        prod1.setName("Produto 1");
+        prod1.setName("Pedidos atendidos");
+        
+        for (LocalDate key: PedidosAtendidos.getInstance().getAtendidos().keySet()) {
+            if(PedidosAtendidos.getInstance().getAtendidos().get(key).intValue() > 0) {
+                prod1.getData().add(new XYChart.Data(key.toString(), PedidosAtendidos.getInstance().getAtendidos().get(key).intValue()));   
+            }
+        }
+        
+        graficoLinha.getData().addAll(prod1);
+        graficoLinha.setPrefSize(400, 400);
 
-        prod1.getData().add(new XYChart.Data(T1, 5));
-        prod1.getData().add(new XYChart.Data(T2, -2));
-        prod1.getData().add(new XYChart.Data(T3, 3));
-        prod1.getData().add(new XYChart.Data(T4, 15));
-
-        XYChart.Series prod2 = new XYChart.Series();
-        prod2.setName("Produto 2");
-
-        prod2.getData().add(new XYChart.Data(T1, -5));
-        prod2.getData().add(new XYChart.Data(T2, -1));
-        prod2.getData().add(new XYChart.Data(T3, 12));
-        prod2.getData().add(new XYChart.Data(T4, 8));
-
-        XYChart.Series prod3 = new XYChart.Series();
-        prod3.setName("Produto 3");
-
-        prod3.getData().add(new XYChart.Data(T1, 12));
-        prod3.getData().add(new XYChart.Data(T2, 15));
-        prod3.getData().add(new XYChart.Data(T3, 12));
-        prod3.getData().add(new XYChart.Data(T4, 20));
-        graficoBarra.getData().addAll(prod1, prod2, prod3);
-        graficoBarra.setPrefSize(400, 400);
-
-        grid.add(graficoBarra, 0, 0);
+        grid.add(graficoLinha, 0, 0);
 
         Button btClose = new Button();
         btClose.setText("Fechar");
@@ -567,10 +515,11 @@ public class Gestao extends Application implements Observer {
         // Adiciona o painel a cena e exibe        
         Scene scene = new Scene(grid);
         dlgStage = new Stage();
-        dlgStage.setTitle("Pedidos Atrasados Por Dia");
+        dlgStage.setTitle("Pedidos atendidos Por Dia");
         dlgStage.initModality(Modality.APPLICATION_MODAL);
         dlgStage.setScene(scene);
         dlgStage.showAndWait();
+        
     }
 
     private void criaDialogoLucratividade() {
@@ -696,6 +645,12 @@ public class Gestao extends Application implements Observer {
             veiculo.decrementaDia();
             if (veiculo.getTempoRestante() == 0) {
                 atualizaListasVeiculos(veiculo);
+                veiculo.setEntregue();
+                if(veiculo.getPedidos() != null) {
+                    for(Pedido p : veiculo.getPedidos()) {
+                       pedidosEntregues.add(p);
+                    }   
+            }
                 veiculo.limpaPedidos();
                 v.clear();
             }
@@ -716,6 +671,7 @@ public class Gestao extends Application implements Observer {
             if (veiculo != null) {                
                 veiculo.addPedido(itemSelecionadoPedido);                
                 num = 1;
+                listViewGaragem.refresh();
             }
         }else if(veiculo.setPesoCarga(itemSelecionadoPedido.pesoTotal(), itemSelecionadoPedido.qtdadeCaixasTipo(TipoCaixa.REFRIGERADA)) == 2){
             num = 2;

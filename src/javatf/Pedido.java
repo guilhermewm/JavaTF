@@ -2,7 +2,6 @@ package javatf;
 
 import java.util.*;
 import java.time.*;
-import java.time.temporal.ChronoUnit;
 
 public class Pedido implements Iterable<Caixa> {
 
@@ -31,6 +30,10 @@ public class Pedido implements Iterable<Caixa> {
     
     public Boolean getAtraso(){        
         return atraso;
+    }
+    
+    public void setEntregue() {
+        dataEntrega = Calendario.getInstance().getDate();
     }
 
     public String getId() {
@@ -115,11 +118,15 @@ public class Pedido implements Iterable<Caixa> {
     
     @Override
     public String toString() {
-        return "ID: " + id + ",  Local: " + local + ", Peso Total: "+ pesoTotal()+ ", Caixas Refrigeradas: "+ qtdadeCaixasTipo(TipoCaixa.REFRIGERADA)  + " Atraso: " + getStringAtraso() + ", Caixas: " + caixas;
+        return "E"+this.dataEntrega+" ID: " + id + ",  Local: " + local + ", Peso Total: "+ pesoTotal()+ ", Caixas Refrigeradas: "+ qtdadeCaixasTipo(TipoCaixa.REFRIGERADA)  + " Atraso: " + getStringAtraso() + ", Caixas: " + caixas;
     }
 
     public void addVeiculoEntrega(Veiculo veiculo) {
         this.veiculoEntrega = veiculo;
+    }
+    
+    public boolean foiEntregue() {        
+        return this.dataEntrega != null;
     }
 
 }

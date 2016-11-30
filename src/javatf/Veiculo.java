@@ -101,11 +101,19 @@ public abstract class Veiculo {
     }
     
     public void limpaPedidos() {
-        if(pedidos != null) { 
+        if(pedidos != null) {             
             pesoCarga = 0;
             tomadas = 0;
             pedidos.clear();
             pedidos = null;            
+        }
+    }
+
+    public void setEntregue() {
+        if(pedidos != null) { 
+            for(Pedido p : pedidos) {
+                p.setEntregue();
+            }                   
         }
     }
 

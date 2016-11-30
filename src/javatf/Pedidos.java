@@ -2,7 +2,6 @@ package javatf;
 
 import java.util.*;
 import java.time.*;
-import java.time.temporal.ChronoUnit;
 
 public class Pedidos extends Observable {
 
@@ -23,7 +22,81 @@ public class Pedidos extends Observable {
         p.addCaixa(cf.createInstance(TipoCaixa.PERECIVEL, 35, LocalDate.of(2016, 12, 12)));
         pedidos.add(p);
 
+        p = new Pedido(LocalDate.of(2016, 12, 10), locais.getLocal(0));
+        p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 360));
+        p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 721));
+        p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 190));
+        p.addCaixa(cf.createInstance(TipoCaixa.PERECIVEL, 25, LocalDate.of(2016, 12, 11)));
+        pedidos.add(p);
+        
+        p = new Pedido(LocalDate.of(2016, 12, 10), locais.getLocal(0));
+        p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 360));
+        p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 721));
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));
+        p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 721));
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));
+        pedidos.add(p);
+        
+        p = new Pedido(LocalDate.of(2016, 12, 10), locais.getLocal(1));
+        p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 360));
+        p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 721));
+        p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 190));
+        p.addCaixa(cf.createInstance(TipoCaixa.PERECIVEL, 25, LocalDate.of(2016, 12, 11)));
+        pedidos.add(p);
+
+        p = new Pedido(LocalDate.of(2016, 11, 19), locais.getLocal(1));
+        p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 500));
+        p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 600));
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 12));
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 57));        
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));       
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));       
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));       
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));  
+        pedidos.add(p);
+        
+        p = new Pedido(LocalDate.of(2016, 11, 18), locais.getLocal(1));
+        p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 500));
+        p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 600));
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 12));
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 57));        
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));       
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));       
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));       
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));  
+        pedidos.add(p);
+        
         p = new Pedido(LocalDate.of(2016, 12, 10), locais.getLocal(2));
+        p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 360));
+        p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 721));
+        p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 190));
+        p.addCaixa(cf.createInstance(TipoCaixa.PERECIVEL, 25, LocalDate.of(2016, 12, 11)));
+        pedidos.add(p);
+
+        p = new Pedido(LocalDate.of(2016, 11, 19), locais.getLocal(2));
+        p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 500));
+        p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 600));
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 12));
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 57));        
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));       
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));       
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));       
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));  
+        pedidos.add(p);
+        
+        p = new Pedido(LocalDate.of(2016, 11, 18), locais.getLocal(2));
+        p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 500));
+        p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 600));
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 12));
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 57));        
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));       
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));       
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));       
+        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));  
+        pedidos.add(p);
+        
+        p = new Pedido(LocalDate.of(2016, 12, 10), locais.getLocal(4));
         p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 360));
         p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 721));
         p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 190));
@@ -51,14 +124,6 @@ public class Pedidos extends Observable {
         p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));       
         p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));  
         pedidos.add(p);
-        
-        p = new Pedido(LocalDate.of(2016, 11, 17), locais.getLocal(4));
-        p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 500));
-        p.addCaixa(cf.createInstance(TipoCaixa.NORMAL, 600));
-        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 12));
-        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 57));        
-        p.addCaixa(cf.createInstance(TipoCaixa.REFRIGERADA, 18));   
-        pedidos.add(p);
     }
 
     public static Pedidos getInstance() {
@@ -70,7 +135,6 @@ public class Pedidos extends Observable {
     }
     
     public int getPedidosAtrasados(LocalDate d) {
-        System.out.println(d);
         int p = 0;
         for(int x =0; x < pedidos.size(); x++){
             if(pedidos.get(x).getDataPrevista().isBefore(d)){
@@ -79,8 +143,8 @@ public class Pedidos extends Observable {
             }
         }
         return p;
-    }
-
+    }   
+    
     public Pedido getCorrente() {
         return (pedidos.get(corrente));
     }
